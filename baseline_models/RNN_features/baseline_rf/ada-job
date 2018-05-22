@@ -1,0 +1,17 @@
+#BSUB -J RNN_rf
+#BSUB -L /bin/bash
+#BSUB -W 96:00
+#BSUB -n 20
+#BSUB -M 2500
+#BSUB -R span[ptile=20]
+#BSUB -R rusage[mem=2500]
+#BSUB -o output
+#BSUB -u mostafa_karimi@tamu.edu
+#BSUB -B -N
+#BSUB -P 082788944836
+
+module load Anaconda/3-5.0.0.1
+source activate mysklearn
+python baseline.py
+source deactivate
+

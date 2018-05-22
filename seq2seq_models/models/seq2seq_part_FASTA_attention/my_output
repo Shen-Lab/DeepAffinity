@@ -1,0 +1,405 @@
+2018-01-06 23:51:31.037787: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-06 23:51:31.037935: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-06 23:51:31.037954: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-06 23:51:31.037964: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-06 23:51:31.037973: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2018-01-06 23:51:31.301427: I tensorflow/core/common_runtime/gpu/gpu_device.cc:955] Found device 0 with properties: 
+name: Tesla K80
+major: 3 minor: 7 memoryClockRate (GHz) 0.6405
+pciBusID 0000:83:00.0
+Total memory: 11.92GiB
+Free memory: 11.82GiB
+2018-01-06 23:51:31.301483: I tensorflow/core/common_runtime/gpu/gpu_device.cc:976] DMA: 0 
+2018-01-06 23:51:31.301495: I tensorflow/core/common_runtime/gpu/gpu_device.cc:986] 0:   Y 
+2018-01-06 23:51:31.301543: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Tesla K80, pci bus id: 0000:83:00.0)
+./data/vocab76.to
+./data/vocab76.from
+Creating 2 layers of 256 units.
+Reading model parameters from ./check-point/translate.ckpt-115371
+Reading development and training data (limit: 0).
+50521
+  reading data line 100000
+119990
+global step 115571 learning rate 0.0290 step-time 2.02251 perplexity 1.01862
+  eval: bucket 0 perplexity 1.00362
+global step 115772 learning rate 0.0290 step-time 1.99093 perplexity 1.01309
+  eval: bucket 0 perplexity 1.00214
+global step 115973 learning rate 0.0290 step-time 1.99149 perplexity 1.01438
+  eval: bucket 0 perplexity 1.00377
+global step 116174 learning rate 0.0290 step-time 1.99265 perplexity 1.01736
+  eval: bucket 0 perplexity 1.00858
+global step 116375 learning rate 0.0290 step-time 1.99478 perplexity 1.01789
+  eval: bucket 0 perplexity 1.00737
+global step 116576 learning rate 0.0288 step-time 1.98934 perplexity 1.01912
+  eval: bucket 0 perplexity 1.01501
+global step 116777 learning rate 0.0285 step-time 1.99223 perplexity 1.02357
+  eval: bucket 0 perplexity 1.00273
+global step 116978 learning rate 0.0282 step-time 1.98015 perplexity 1.02091
+  eval: bucket 0 perplexity 1.00478
+global step 117179 learning rate 0.0282 step-time 1.97764 perplexity 1.01911
+  eval: bucket 0 perplexity 1.00293
+global step 117380 learning rate 0.0282 step-time 1.98249 perplexity 1.02100
+  eval: bucket 0 perplexity 1.01177
+global step 117581 learning rate 0.0282 step-time 1.97856 perplexity 1.01746
+  eval: bucket 0 perplexity 1.00573
+global step 117782 learning rate 0.0282 step-time 1.98108 perplexity 1.02277
+  eval: bucket 0 perplexity 1.05172
+global step 117983 learning rate 0.0279 step-time 1.98285 perplexity 1.02441
+  eval: bucket 0 perplexity 1.00661
+global step 118184 learning rate 0.0276 step-time 1.98078 perplexity 1.01797
+  eval: bucket 0 perplexity 1.00887
+global step 118385 learning rate 0.0276 step-time 1.97774 perplexity 1.02148
+  eval: bucket 0 perplexity 1.00169
+global step 118586 learning rate 0.0276 step-time 1.98142 perplexity 1.02042
+  eval: bucket 0 perplexity 1.00299
+global step 118787 learning rate 0.0276 step-time 1.98337 perplexity 1.01808
+  eval: bucket 0 perplexity 1.00455
+global step 118988 learning rate 0.0276 step-time 1.98323 perplexity 1.01433
+  eval: bucket 0 perplexity 1.00729
+global step 119189 learning rate 0.0276 step-time 1.97969 perplexity 1.01935
+  eval: bucket 0 perplexity 1.02569
+global step 119390 learning rate 0.0276 step-time 1.98313 perplexity 1.01783
+  eval: bucket 0 perplexity 1.00292
+global step 119591 learning rate 0.0276 step-time 1.97546 perplexity 1.01272
+  eval: bucket 0 perplexity 1.00334
+global step 119792 learning rate 0.0276 step-time 1.97726 perplexity 1.01769
+  eval: bucket 0 perplexity 1.00526
+global step 119993 learning rate 0.0276 step-time 1.97997 perplexity 1.02096
+  eval: bucket 0 perplexity 1.00484
+global step 120194 learning rate 0.0273 step-time 1.98057 perplexity 1.01321
+  eval: bucket 0 perplexity 1.00666
+global step 120395 learning rate 0.0273 step-time 1.98200 perplexity 1.01521
+  eval: bucket 0 perplexity 1.00655
+global step 120596 learning rate 0.0273 step-time 1.97649 perplexity 1.01565
+  eval: bucket 0 perplexity 1.00416
+global step 120797 learning rate 0.0273 step-time 1.97525 perplexity 1.01569
+  eval: bucket 0 perplexity 1.00443
+global step 120998 learning rate 0.0271 step-time 1.98080 perplexity 1.01417
+  eval: bucket 0 perplexity 1.03081
+global step 121199 learning rate 0.0271 step-time 1.98495 perplexity 1.01460
+  eval: bucket 0 perplexity 1.00214
+global step 121400 learning rate 0.0271 step-time 1.99157 perplexity 1.01514
+  eval: bucket 0 perplexity 1.00401
+global step 121601 learning rate 0.0271 step-time 1.98257 perplexity 1.01530
+  eval: bucket 0 perplexity 1.03761
+global step 121802 learning rate 0.0268 step-time 1.98248 perplexity 1.01759
+  eval: bucket 0 perplexity 1.00386
+global step 122003 learning rate 0.0265 step-time 1.97935 perplexity 1.01431
+  eval: bucket 0 perplexity 1.00284
+global step 122204 learning rate 0.0265 step-time 1.97999 perplexity 1.01348
+  eval: bucket 0 perplexity 1.00276
+global step 122405 learning rate 0.0265 step-time 1.98448 perplexity 1.01707
+  eval: bucket 0 perplexity 1.00651
+global step 122606 learning rate 0.0265 step-time 1.98732 perplexity 1.01475
+  eval: bucket 0 perplexity 1.00340
+global step 122807 learning rate 0.0265 step-time 1.98703 perplexity 1.01976
+  eval: bucket 0 perplexity 1.00612
+global step 123008 learning rate 0.0263 step-time 1.98590 perplexity 1.01470
+  eval: bucket 0 perplexity 1.08751
+global step 123209 learning rate 0.0263 step-time 1.97769 perplexity 1.01474
+  eval: bucket 0 perplexity 1.00754
+global step 123410 learning rate 0.0263 step-time 1.97866 perplexity 1.01890
+  eval: bucket 0 perplexity 1.10509
+global step 123611 learning rate 0.0263 step-time 1.97800 perplexity 1.01152
+  eval: bucket 0 perplexity 1.01315
+global step 123812 learning rate 0.0263 step-time 1.98977 perplexity 1.01112
+  eval: bucket 0 perplexity 1.06006
+global step 124013 learning rate 0.0263 step-time 1.98007 perplexity 1.01644
+  eval: bucket 0 perplexity 1.00301
+global step 124214 learning rate 0.0263 step-time 1.98114 perplexity 1.01398
+  eval: bucket 0 perplexity 1.00185
+global step 124415 learning rate 0.0263 step-time 1.98002 perplexity 1.02113
+  eval: bucket 0 perplexity 1.00754
+global step 124616 learning rate 0.0260 step-time 1.98103 perplexity 1.02005
+  eval: bucket 0 perplexity 1.00621
+global step 124817 learning rate 0.0260 step-time 1.98221 perplexity 1.02012
+  eval: bucket 0 perplexity 1.00840
+global step 125018 learning rate 0.0260 step-time 1.97791 perplexity 1.01318
+  eval: bucket 0 perplexity 1.00382
+global step 125219 learning rate 0.0260 step-time 1.97721 perplexity 1.01894
+  eval: bucket 0 perplexity 1.00231
+global step 125420 learning rate 0.0260 step-time 1.98156 perplexity 1.01757
+  eval: bucket 0 perplexity 1.00501
+global step 125621 learning rate 0.0260 step-time 1.97774 perplexity 1.01596
+  eval: bucket 0 perplexity 1.00520
+global step 125822 learning rate 0.0260 step-time 1.97800 perplexity 1.01401
+  eval: bucket 0 perplexity 1.00669
+global step 126023 learning rate 0.0260 step-time 1.97621 perplexity 1.01144
+  eval: bucket 0 perplexity 1.00564
+global step 126224 learning rate 0.0260 step-time 1.98638 perplexity 1.01042
+  eval: bucket 0 perplexity 1.00165
+global step 126425 learning rate 0.0260 step-time 1.97757 perplexity 1.01955
+  eval: bucket 0 perplexity 1.02574
+global step 126626 learning rate 0.0257 step-time 1.97966 perplexity 1.01381
+  eval: bucket 0 perplexity 1.04559
+global step 126827 learning rate 0.0257 step-time 1.97826 perplexity 1.02063
+  eval: bucket 0 perplexity 1.00511
+global step 127028 learning rate 0.0255 step-time 1.98282 perplexity 1.01465
+  eval: bucket 0 perplexity 1.00478
+global step 127229 learning rate 0.0255 step-time 1.98237 perplexity 1.01629
+  eval: bucket 0 perplexity 1.00563
+global step 127430 learning rate 0.0255 step-time 1.98212 perplexity 1.01362
+  eval: bucket 0 perplexity 1.00930
+global step 127631 learning rate 0.0255 step-time 1.98082 perplexity 1.01384
+  eval: bucket 0 perplexity 1.01468
+global step 127832 learning rate 0.0255 step-time 1.98177 perplexity 1.01665
+  eval: bucket 0 perplexity 1.04935
+global step 128033 learning rate 0.0252 step-time 1.97879 perplexity 1.01786
+  eval: bucket 0 perplexity 1.00303
+global step 128234 learning rate 0.0250 step-time 1.97468 perplexity 1.01717
+  eval: bucket 0 perplexity 1.00598
+global step 128435 learning rate 0.0250 step-time 1.97885 perplexity 1.01606
+  eval: bucket 0 perplexity 1.02297
+global step 128636 learning rate 0.0250 step-time 1.97578 perplexity 1.01889
+  eval: bucket 0 perplexity 1.05159
+global step 128837 learning rate 0.0247 step-time 1.98136 perplexity 1.02253
+  eval: bucket 0 perplexity 1.00305
+global step 129038 learning rate 0.0245 step-time 1.97707 perplexity 1.01339
+  eval: bucket 0 perplexity 1.00714
+global step 129239 learning rate 0.0245 step-time 1.97448 perplexity 1.01308
+  eval: bucket 0 perplexity 1.00175
+global step 129440 learning rate 0.0245 step-time 1.98557 perplexity 1.01205
+  eval: bucket 0 perplexity 1.00313
+global step 129641 learning rate 0.0245 step-time 1.97972 perplexity 1.01447
+  eval: bucket 0 perplexity 1.00520
+global step 129842 learning rate 0.0242 step-time 1.98273 perplexity 1.01298
+  eval: bucket 0 perplexity 1.01420
+global step 130043 learning rate 0.0242 step-time 1.97978 perplexity 1.01678
+  eval: bucket 0 perplexity 1.00442
+global step 130244 learning rate 0.0240 step-time 1.97985 perplexity 1.01492
+  eval: bucket 0 perplexity 1.00531
+global step 130445 learning rate 0.0240 step-time 1.97725 perplexity 1.01240
+  eval: bucket 0 perplexity 1.00250
+global step 130646 learning rate 0.0240 step-time 1.98571 perplexity 1.01717
+  eval: bucket 0 perplexity 1.00272
+global step 130847 learning rate 0.0238 step-time 1.97666 perplexity 1.01236
+  eval: bucket 0 perplexity 1.00212
+global step 131048 learning rate 0.0238 step-time 1.98679 perplexity 1.01431
+  eval: bucket 0 perplexity 1.00183
+global step 131249 learning rate 0.0238 step-time 1.97641 perplexity 1.01214
+  eval: bucket 0 perplexity 1.00151
+global step 131450 learning rate 0.0238 step-time 1.98643 perplexity 1.01062
+  eval: bucket 0 perplexity 1.00193
+global step 131651 learning rate 0.0238 step-time 1.97396 perplexity 1.01265
+  eval: bucket 0 perplexity 1.14668
+global step 131852 learning rate 0.0238 step-time 1.97765 perplexity 1.01246
+  eval: bucket 0 perplexity 1.00534
+global step 132053 learning rate 0.0238 step-time 1.98003 perplexity 1.01717
+  eval: bucket 0 perplexity 1.01688
+global step 132254 learning rate 0.0235 step-time 1.97442 perplexity 1.01110
+  eval: bucket 0 perplexity 1.00597
+global step 132455 learning rate 0.0235 step-time 1.98040 perplexity 1.01447
+  eval: bucket 0 perplexity 1.00379
+global step 132656 learning rate 0.0235 step-time 1.97406 perplexity 1.01412
+  eval: bucket 0 perplexity 1.00415
+global step 132857 learning rate 0.0235 step-time 1.97657 perplexity 1.01150
+  eval: bucket 0 perplexity 1.00495
+global step 133058 learning rate 0.0235 step-time 1.97937 perplexity 1.01474
+  eval: bucket 0 perplexity 1.00295
+global step 133259 learning rate 0.0233 step-time 1.97319 perplexity 1.01246
+  eval: bucket 0 perplexity 1.00904
+global step 133460 learning rate 0.0233 step-time 1.97677 perplexity 1.01112
+  eval: bucket 0 perplexity 1.00271
+global step 133661 learning rate 0.0233 step-time 1.98581 perplexity 1.00967
+  eval: bucket 0 perplexity 1.00341
+global step 133862 learning rate 0.0233 step-time 1.97881 perplexity 1.01507
+  eval: bucket 0 perplexity 1.00290
+global step 134063 learning rate 0.0231 step-time 1.97990 perplexity 1.01562
+  eval: bucket 0 perplexity 1.00343
+global step 134264 learning rate 0.0228 step-time 1.98032 perplexity 1.01581
+  eval: bucket 0 perplexity 1.00645
+global step 134465 learning rate 0.0226 step-time 1.97616 perplexity 1.00998
+  eval: bucket 0 perplexity 1.00308
+global step 134666 learning rate 0.0226 step-time 1.98658 perplexity 1.01028
+  eval: bucket 0 perplexity 1.00229
+global step 134867 learning rate 0.0226 step-time 1.97952 perplexity 1.01593
+  eval: bucket 0 perplexity 1.00482
+global step 135068 learning rate 0.0224 step-time 1.98200 perplexity 1.01787
+  eval: bucket 0 perplexity 1.00345
+global step 135269 learning rate 0.0221 step-time 1.98102 perplexity 1.00951
+  eval: bucket 0 perplexity 1.01399
+global step 135470 learning rate 0.0221 step-time 1.97969 perplexity 1.01101
+  eval: bucket 0 perplexity 1.02878
+global step 135671 learning rate 0.0221 step-time 1.97827 perplexity 1.00814
+  eval: bucket 0 perplexity 1.00336
+global step 135872 learning rate 0.0221 step-time 1.97606 perplexity 1.01236
+  eval: bucket 0 perplexity 1.00348
+global step 136073 learning rate 0.0219 step-time 1.97868 perplexity 1.01355
+  eval: bucket 0 perplexity 1.17330
+global step 136274 learning rate 0.0217 step-time 1.97782 perplexity 1.01040
+  eval: bucket 0 perplexity 1.00325
+global step 136475 learning rate 0.0217 step-time 1.98488 perplexity 1.02186
+  eval: bucket 0 perplexity 1.00354
+global step 136676 learning rate 0.0215 step-time 1.98689 perplexity 1.01516
+  eval: bucket 0 perplexity 1.00502
+global step 136877 learning rate 0.0215 step-time 1.97927 perplexity 1.01934
+  eval: bucket 0 perplexity 1.00344
+global step 137078 learning rate 0.0215 step-time 1.98358 perplexity 1.01591
+  eval: bucket 0 perplexity 1.10252
+global step 137279 learning rate 0.0215 step-time 1.98109 perplexity 1.01791
+  eval: bucket 0 perplexity 1.00433
+global step 137480 learning rate 0.0215 step-time 1.98729 perplexity 1.01941
+  eval: bucket 0 perplexity 1.00221
+global step 137681 learning rate 0.0213 step-time 1.97458 perplexity 1.01327
+  eval: bucket 0 perplexity 1.00303
+global step 137882 learning rate 0.0213 step-time 1.97346 perplexity 1.01827
+  eval: bucket 0 perplexity 1.00114
+global step 138083 learning rate 0.0213 step-time 1.98121 perplexity 1.01492
+  eval: bucket 0 perplexity 1.00177
+global step 138284 learning rate 0.0213 step-time 1.97350 perplexity 1.01259
+  eval: bucket 0 perplexity 1.00173
+global step 138485 learning rate 0.0213 step-time 1.97681 perplexity 1.01219
+  eval: bucket 0 perplexity 1.00935
+global step 138686 learning rate 0.0213 step-time 1.98310 perplexity 1.01389
+  eval: bucket 0 perplexity 1.00248
+global step 138887 learning rate 0.0213 step-time 1.98592 perplexity 1.01604
+  eval: bucket 0 perplexity 1.18237
+global step 139088 learning rate 0.0211 step-time 1.97630 perplexity 1.01772
+  eval: bucket 0 perplexity 1.00351
+global step 139289 learning rate 0.0208 step-time 1.98510 perplexity 1.01991
+  eval: bucket 0 perplexity 1.00347
+global step 139490 learning rate 0.0206 step-time 1.97852 perplexity 1.02009
+  eval: bucket 0 perplexity 1.00363
+global step 139691 learning rate 0.0204 step-time 1.97273 perplexity 1.01686
+  eval: bucket 0 perplexity 1.00289
+global step 139892 learning rate 0.0204 step-time 1.98413 perplexity 1.01956
+  eval: bucket 0 perplexity 1.00190
+global step 140093 learning rate 0.0204 step-time 1.97684 perplexity 1.02103
+  eval: bucket 0 perplexity 1.00529
+global step 140294 learning rate 0.0202 step-time 1.97443 perplexity 1.01960
+  eval: bucket 0 perplexity 1.00380
+global step 140495 learning rate 0.0202 step-time 1.97719 perplexity 1.03288
+  eval: bucket 0 perplexity 1.00562
+global step 140696 learning rate 0.0200 step-time 1.97699 perplexity 1.01962
+  eval: bucket 0 perplexity 1.00433
+global step 140897 learning rate 0.0200 step-time 1.97627 perplexity 1.01984
+  eval: bucket 0 perplexity 1.00412
+global step 141098 learning rate 0.0200 step-time 1.97762 perplexity 1.01363
+  eval: bucket 0 perplexity 1.00335
+global step 141299 learning rate 0.0200 step-time 1.97956 perplexity 1.01359
+  eval: bucket 0 perplexity 1.00660
+global step 141500 learning rate 0.0200 step-time 1.97955 perplexity 1.01669
+  eval: bucket 0 perplexity 1.02053
+global step 141701 learning rate 0.0200 step-time 1.97573 perplexity 1.01587
+  eval: bucket 0 perplexity 1.00259
+global step 141902 learning rate 0.0200 step-time 1.97754 perplexity 1.01057
+  eval: bucket 0 perplexity 1.00296
+global step 142103 learning rate 0.0200 step-time 1.97942 perplexity 1.01192
+  eval: bucket 0 perplexity 1.00431
+global step 142304 learning rate 0.0200 step-time 1.97795 perplexity 1.01168
+  eval: bucket 0 perplexity 1.00410
+global step 142505 learning rate 0.0200 step-time 1.97777 perplexity 1.01186
+  eval: bucket 0 perplexity 1.00449
+global step 142706 learning rate 0.0200 step-time 1.97788 perplexity 1.01610
+  eval: bucket 0 perplexity 1.00564
+global step 142907 learning rate 0.0198 step-time 1.97944 perplexity 1.01140
+  eval: bucket 0 perplexity 1.00331
+global step 143108 learning rate 0.0198 step-time 1.97894 perplexity 1.01194
+  eval: bucket 0 perplexity 1.00370
+global step 143309 learning rate 0.0198 step-time 1.97752 perplexity 1.00903
+  eval: bucket 0 perplexity 1.00421
+global step 143510 learning rate 0.0198 step-time 1.97940 perplexity 1.01431
+  eval: bucket 0 perplexity 1.00183
+global step 143711 learning rate 0.0196 step-time 1.98598 perplexity 1.01387
+  eval: bucket 0 perplexity 1.00288
+global step 143912 learning rate 0.0196 step-time 1.97964 perplexity 1.01192
+  eval: bucket 0 perplexity 1.00196
+global step 144113 learning rate 0.0196 step-time 1.98534 perplexity 1.00923
+  eval: bucket 0 perplexity 1.00216
+global step 144314 learning rate 0.0196 step-time 1.97521 perplexity 1.01089
+  eval: bucket 0 perplexity 1.00232
+global step 144515 learning rate 0.0196 step-time 1.97602 perplexity 1.01267
+  eval: bucket 0 perplexity 1.00357
+global step 144716 learning rate 0.0194 step-time 1.97457 perplexity 1.00587
+  eval: bucket 0 perplexity 1.13468
+global step 144917 learning rate 0.0194 step-time 1.97551 perplexity 1.01061
+  eval: bucket 0 perplexity 1.00346
+global step 145118 learning rate 0.0194 step-time 1.97452 perplexity 1.00822
+  eval: bucket 0 perplexity 1.00370
+global step 145319 learning rate 0.0194 step-time 1.97287 perplexity 1.00922
+  eval: bucket 0 perplexity 1.00156
+global step 145520 learning rate 0.0194 step-time 1.97530 perplexity 1.00876
+  eval: bucket 0 perplexity 1.00193
+global step 145721 learning rate 0.0194 step-time 1.98091 perplexity 1.01052
+  eval: bucket 0 perplexity 1.00327
+global step 145922 learning rate 0.0192 step-time 1.97447 perplexity 1.01570
+  eval: bucket 0 perplexity 1.12094
+global step 146123 learning rate 0.0190 step-time 1.97833 perplexity 1.00732
+  eval: bucket 0 perplexity 1.00252
+global step 146324 learning rate 0.0190 step-time 1.98085 perplexity 1.00871
+  eval: bucket 0 perplexity 1.06604
+global step 146525 learning rate 0.0190 step-time 1.98130 perplexity 1.00950
+  eval: bucket 0 perplexity 1.00553
+global step 146726 learning rate 0.0190 step-time 1.97757 perplexity 1.01050
+  eval: bucket 0 perplexity 1.00507
+global step 146927 learning rate 0.0189 step-time 1.98372 perplexity 1.01056
+  eval: bucket 0 perplexity 1.00328
+global step 147128 learning rate 0.0187 step-time 1.97759 perplexity 1.01114
+  eval: bucket 0 perplexity 1.00228
+global step 147329 learning rate 0.0185 step-time 1.97795 perplexity 1.00893
+  eval: bucket 0 perplexity 1.02597
+global step 147530 learning rate 0.0185 step-time 1.98173 perplexity 1.00871
+  eval: bucket 0 perplexity 1.00351
+global step 147731 learning rate 0.0185 step-time 1.98100 perplexity 1.01078
+  eval: bucket 0 perplexity 1.00201
+global step 147932 learning rate 0.0185 step-time 1.97864 perplexity 1.01201
+  eval: bucket 0 perplexity 1.00611
+global step 148133 learning rate 0.0183 step-time 1.98037 perplexity 1.00613
+  eval: bucket 0 perplexity 1.00222
+global step 148334 learning rate 0.0183 step-time 1.98177 perplexity 1.01142
+  eval: bucket 0 perplexity 1.05473
+global step 148535 learning rate 0.0183 step-time 1.98292 perplexity 1.00873
+  eval: bucket 0 perplexity 1.04750
+global step 148736 learning rate 0.0183 step-time 1.98449 perplexity 1.01155
+  eval: bucket 0 perplexity 1.00273
+global step 148937 learning rate 0.0181 step-time 1.97342 perplexity 1.00723
+  eval: bucket 0 perplexity 1.00378
+global step 149138 learning rate 0.0181 step-time 1.97418 perplexity 1.00759
+  eval: bucket 0 perplexity 1.03395
+global step 149339 learning rate 0.0181 step-time 1.98333 perplexity 1.00941
+  eval: bucket 0 perplexity 1.00153
+global step 149540 learning rate 0.0181 step-time 1.98146 perplexity 1.00609
+  eval: bucket 0 perplexity 1.00643
+global step 149741 learning rate 0.0181 step-time 1.97643 perplexity 1.01223
+  eval: bucket 0 perplexity 1.00381
+global step 149942 learning rate 0.0179 step-time 1.98138 perplexity 1.00961
+  eval: bucket 0 perplexity 1.16758
+global step 150143 learning rate 0.0179 step-time 1.97885 perplexity 1.00817
+  eval: bucket 0 perplexity 1.00446
+global step 150344 learning rate 0.0179 step-time 1.97660 perplexity 1.01151
+  eval: bucket 0 perplexity 1.00341
+global step 150545 learning rate 0.0179 step-time 1.98169 perplexity 1.00941
+  eval: bucket 0 perplexity 1.00429
+global step 150746 learning rate 0.0179 step-time 1.97855 perplexity 1.00883
+  eval: bucket 0 perplexity 1.00106
+global step 150947 learning rate 0.0179 step-time 1.97324 perplexity 1.00951
+  eval: bucket 0 perplexity 1.00140
+global step 151148 learning rate 0.0179 step-time 1.98668 perplexity 1.00742
+  eval: bucket 0 perplexity 1.00153
+global step 151349 learning rate 0.0179 step-time 1.98482 perplexity 1.00867
+  eval: bucket 0 perplexity 1.00164
+global step 151550 learning rate 0.0179 step-time 1.98044 perplexity 1.00900
+  eval: bucket 0 perplexity 1.00457
+global step 151751 learning rate 0.0179 step-time 1.98093 perplexity 1.00977
+  eval: bucket 0 perplexity 1.00403
+global step 151952 learning rate 0.0178 step-time 1.97787 perplexity 1.00793
+  eval: bucket 0 perplexity 1.00166
+global step 152153 learning rate 0.0178 step-time 1.98788 perplexity 1.00832
+  eval: bucket 0 perplexity 1.00368
+global step 152354 learning rate 0.0178 step-time 1.97518 perplexity 1.01053
+  eval: bucket 0 perplexity 1.00182
+global step 152555 learning rate 0.0176 step-time 1.98335 perplexity 1.00779
+  eval: bucket 0 perplexity 1.00447
+global step 152756 learning rate 0.0176 step-time 1.98317 perplexity 1.00711
+  eval: bucket 0 perplexity 1.04436
+global step 152957 learning rate 0.0176 step-time 1.98280 perplexity 1.00872
+  eval: bucket 0 perplexity 1.00421
+global step 153158 learning rate 0.0176 step-time 1.97638 perplexity 1.00863
+  eval: bucket 0 perplexity 1.00269
+global step 153359 learning rate 0.0176 step-time 1.98332 perplexity 1.00548
+  eval: bucket 0 perplexity 1.00168
+global step 153560 learning rate 0.0176 step-time 1.96828 perplexity 1.00918
+  eval: bucket 0 perplexity 1.00132
+global step 153761 learning rate 0.0174 step-time 1.97570 perplexity 1.00712
+  eval: bucket 0 perplexity 1.00154
+slurmstepd: error: *** JOB 441116 ON tgpu-0826 CANCELLED AT 2018-01-07T23:51:08 DUE TO TIME LIMIT ***

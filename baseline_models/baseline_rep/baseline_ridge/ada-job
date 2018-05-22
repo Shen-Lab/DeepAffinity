@@ -1,0 +1,17 @@
+#BSUB -J baseline_ridge
+#BSUB -L /bin/bash
+#BSUB -W 24:00
+#BSUB -n 1
+#BSUB -M 30000
+#BSUB -R span[ptile=1]
+#BSUB -R rusage[mem=30000]
+#BSUB -o output
+#BSUB -u mostafa_karimi@tamu.edu
+#BSUB -B -N
+#BSUB -P 082788944836
+
+module load Anaconda/3-5.0.0.1
+source activate mysklearn
+python baseline.py
+source deactivate
+
