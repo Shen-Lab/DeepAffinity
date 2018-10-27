@@ -70,10 +70,8 @@ from tensorflow.python.ops import control_flow_ops
 from tensorflow.python.ops import embedding_ops
 from tensorflow.python.ops import math_ops
 from tensorflow.python.ops import nn_ops
-#from tensorflow.python.ops import rnn #MK
-import rnn
+from tensorflow.python.ops import rnn
 from tensorflow.python.ops import rnn_cell_impl
-#import rnn_cell_impl #MK
 from tensorflow.python.ops import variable_scope
 from tensorflow.python.util import nest
 
