@@ -1,0 +1,72 @@
+1. Download dataset from bindingDB website in tsv format:
+   https://www.bindingdb.org/bind/downloads/BindingDB_All_2018m8.tsv.zip
+
+2. Unzip dataset to the same directory with script and run:
+	python firstStep.py
+
+3. Then run 
+	python uniquePnC.py
+   it will generate unique CID (uniqueCID) and unique protein (uniqueProtein) files.
+
+4. Let's deal with compound data first. 
+   move the uniqueCID file to pubchem directory:
+	mv uniqueCID pubchem
+	cd pubchem
+   Based on the unique CID file, you need to get the sdf data from https://pubchem.ncbi.nlm.nih.gov/pc_fetch/pc_fetch.cgi
+   This webserver has limitation of download number per request. You may need to split the unique CID file into several files.
+   You can run:
+	python splitCID.py 
+   and it will help to split file with each one containing 200k CIDs.
+   After downloading sdf file from webserver, please rename those files as "CID1.sdf", "CID2.sdf" and ect. Then run:
+	python getCID_Feature.py
+   which will integrate those files and convert features of protein from base64 format to binary number. In this step, please notice that if the number of split CID files is not 3, you need to modify the 30th line of "getCID_Feature.py" with the files number you get. For example, if you split into 4 CID files, it should be modified as "fileNum = 4".
+
+5. Move the result file "CID_Smi_Feature" to the last directory. Run:
+	mv CID_Smi_Feature ..
+	cd ..
+	python toCanSMILE.py
+   and it helps to convert SMILE sequences to canonical SMILE format.
+
+6. Then let's deal with protein files for baseline method:
+	mv uniqueProtein pfam
+	cd pfam
+   Convert the sequences to FASTA format by:
+	python toFasta.py
+   Then you need to install Hmmer to predict the protein domain features. You can get the program at:
+	http://hmmer.org/
+   And you need to download the Pfam family accession number list (Pfam-A.clans.tsv.gz) and preprocessed Pfam database (Pfam-A.hmm.gz) for Hmmer from:
+	ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam31.0/
+   The version we used is hmmer-3.2.1 and Pfam 31.0.
+   After installing the software properly, please put the Pfam-A.hmm under the pfam folder and copy it to the hmmer directory and run this command in the pfam folder:
+	../src/hmmscan --tblout uniqueProtein.output --cpu 5 --acc --cut_ga ../pfam/Pfam-A.hmm uniqueProtein.fasta
+   "../src/hmmscan" is the hmmscan program path, the "uniqueProtein.output" is the output file name, "./pfam/Pfam-A.hmm" is the preprocessed database path, "uniqueProtein.fasta" is the input FASTA format file.
+   Put the output file to the pfam folder and run:
+	python get_Seq_Vec.py
+
+7. Use SSpro and ACCpro to predict the secondary structure and exposedness of protein. First of all, please follow the instruction and install the SCRATCH-1D release 1.1 from:
+	download.igb.uci.edu
+   Then use the fasta format of protein sequences as input to get the result. This software will output several files. We only need two files which are ended with ".ss" and ".acc". For us, their names are "uniqueProtein.fasta.acc" and "uniqueProtein.fasta.ss".
+   Copy those two files to "our_format" fold and run:
+	python -p uniqueProtein.fasta -a uniqueProtein.fasta.acc -s uniqueProtein.fasta.ss 
+
+8. Prepare for classification of proteins. Go to the "uniprotID_Dict" folder in the root path and extract the unique uniprot ID as:
+	python extractUniID.py
+   Then get the GO term ID for each protein ID by:
+	python build_Uin_Keywords.py
+   You can get the corresponding GO term ID (Tyrosine Kinase: GO:0004713, GPCR: GO:0004930, ER: GO:0030284, channel: GO:0005216) of different classes of proteins by yourself by API but change the "relations" as "is_a":
+	https://www.ebi.ac.uk/QuickGO/api/index.html#!/gene_ontology/findAncestorsUsingGET_1
+   Or you can use the GO term ID files provided in this folder, which are "channel", "GPCR", "ER" and "kinase".
+   Then get the classification result for each uniprot ID by:
+	python build_Uin_Dict.py
+
+9. Split data. Copy the result file of each steps from corresponding folders:
+	SPS format dictionary: "protein_grouped_finalPresentation" from folder "our_format" 
+	Protein domain feature dictionary: "Seq_Vector" from folder "pfam" 
+	Compound feature dictionary: "CID_Smi_Feature" from folder "pubchem"
+	Uniprot ID classification dictionary: "uniID_class" from folder "uniprotID_Dict"
+   Copy those files to the root directory and run:
+	python split.py BindingDB_All_firststep_noMulti_can.tsv
+   "BindingDB_All_firststep_noMulti_can.tsv" is the result of step 5
+   Then you will get split data based on different measurements and classes.
+   We also provide our final split data result in compressed folder for your information.
+
