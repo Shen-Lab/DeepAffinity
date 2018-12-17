@@ -81,7 +81,7 @@ for line in f:
             length_train = length_train+1
 
 f.close()
-label_train = normalize_labels(label_train)
+#label_train = normalize_labels(label_train)
 
 
 label_path_test=data_path+"test_"+data_type
@@ -96,7 +96,7 @@ for line in f:
             length_test = length_test+1
 
 f.close()
-label_test = normalize_labels(label_test)
+#label_test = normalize_labels(label_test)
 
 label_path_ER=data_path+"ER_"+data_type
 label_ER = []
@@ -110,7 +110,7 @@ for line in f:
             length_ER = length_ER+1
 
 f.close()
-label_ER = normalize_labels(label_ER)
+#label_ER = normalize_labels(label_ER)
 
 
 
@@ -126,7 +126,7 @@ for line in f:
             length_kinase = length_kinase+1
 
 f.close()
-label_kinase = normalize_labels(label_kinase)
+#label_kinase = normalize_labels(label_kinase)
 
 label_path_GPCR=data_path+"GPCR_"+data_type
 label_GPCR = []
@@ -140,7 +140,7 @@ for line in f:
             length_GPCR = length_GPCR+1
 
 f.close()
-label_GPCR = normalize_labels(label_GPCR)
+#label_GPCR = normalize_labels(label_GPCR)
 
 label_path_channel=data_path+"channel_"+data_type
 label_channel = []
@@ -154,7 +154,7 @@ for line in f:
             length_channel = length_channel+1
 
 f.close()
-label_channel = normalize_labels(label_channel)
+#label_channel = normalize_labels(label_channel)
 
 
 ##################  reading compound features

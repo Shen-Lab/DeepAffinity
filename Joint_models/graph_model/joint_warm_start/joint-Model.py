@@ -163,7 +163,7 @@ def read_labels(path):
          else:
             x.append(float(line)) 
  
-    y = normalize_labels(x)
+    #y = normalize_labels(x)
     return y
 
 

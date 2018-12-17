@@ -1,7 +1,6 @@
 #coding:utf-8
 from __future__ import division
 import re
-import pybel
 import csv
 import sys
 from subprocess import call

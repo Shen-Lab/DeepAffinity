@@ -1,5 +1,5 @@
 1. Download dataset from bindingDB website in tsv format:
-   https://www.bindingdb.org/bind/downloads/BindingDB_All_2018m8.tsv.zip
+   https://drive.google.com/open?id=1_uZVTBVPeeF64joitPU8uDZnfIGS1me0
 
 2. Unzip dataset to the same directory with script and run:
 	python firstStep.py

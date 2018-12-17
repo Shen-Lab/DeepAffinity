@@ -1,0 +1,38 @@
+You can generate cleared data without split by downloading cleared data by:
+	wget https://drive.google.com/open?id=1bpwTiWdm9F_-mIIX2xngRnOXtgqKKlnr
+
+Then please download data file by:
+	wget https://drive.google.com/open?id=17vSj5cdCtTEnCQ8pf63HFdOA7smJdiwv
+
+unzip them as:
+	unzip BindingDB_All_firststep_noMulti_can.tar.gz
+	unzip data.tar.gz
+
+Run:
+	python get_benchmark.py BindingDB_All_firststep_noMulti_can.tsv
+
+You will get several files:
+	1. *_protein_compound_pair.tsv
+	* represents the measure method for protein compound pairs. It can be IC50, EC50, Ki and Kd. In this file, it contains DeepAffinity protein ID (4 digits random number and Uppercase letters), protein Uniprot ID, DeepAffinity compound ID (4 digits random number and Lowercase letters), compound CID and measure value. DeepAffinity ID can be used to retrieve corresponding representation format. Those measure value is calculated by -log10(M) and the detail can be found in the supplement of our paper.
+	
+	2. dcid_smi.tsv
+	DeepAffinity compound ID and its corresponding canonical SMILE format of compounds.
+
+	3. dcid_fingerprint.tsv
+	DeepAffinity compound ID and its corresponding fingerprint feature of compound. Each one of them is a 881 digit binary number. 
+	
+	4. dpid_seq.tsv
+	DeepAffinity protein ID and its corresponding protein sequence.
+
+	5. dpid_sps.tsv
+	DeepAffinity protein ID and its corresponding protein SPS representation format.
+
+	6. dpid_dom.tsv
+	DeepAffinity protein ID and its corresponding protein domain features. Each one of them is a 16712 digits binary number.
+
+	7. SDF folder
+	This folder contains the graphic data of compounds, which is SDF format. Each file of this folder is named by correpsonding DeepAffinity compound ID. 
+
+
+The result cleared data can also be downloaded from:
+	https://drive.google.com/open?id=1_msEbSh_YZr0NLSR_DJ_xWE9FlqBlMV9
