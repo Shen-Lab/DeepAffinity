@@ -6,7 +6,7 @@ In this folder, we provide two sets of data and their script for your informatio
 	https://www.bindingdb.org/bind/chemsearch/marvin/BindingDB-TSV-Format.pdf
 	
 	If you are trying to find the data we used for our model, you can directly look at other two folders.
-	In "baseline" folder, there will be 4 types of classes, which are channel, GPCR, ER and kinase, classified based on their biological functions. For other pairs, we put 70% in training set and 30% in test set. For each class, there are 4 files:
+	In "baseline" folder, there will be 4 types of classes completely withheld from training, which are channel, GPCR, ER and kinase, classified based on their biological functions. These four classes constitute the "generalization" set in our manuscript.  For other pairs, we put 70% in training set and 30% in test set. For each class, there are 4 files:
 	*_compound_fingerprint: fingerprint features of compounds, each one of them is a 881 digit binary number. 
 	*_ic50/ec50/ki/kd: -log10(M) of label value
 	*_protein_domain: domain feature of proteins, each one of them is a 16712 digits binary number.
