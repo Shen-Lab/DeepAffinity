@@ -17,6 +17,9 @@ Drug discovery demands rapid quantification of compound-protein interaction  (CP
 	* Joint attention mechanism
 	* Graph convolution neural network (GCNN) with separate attention mechanism
 
+## Note:
+We recommend referring to PubChem for canonical SMILES for compounds.  
+
 ## Citation:
 If you find the code useful for your research, please consider citing our paper:
 ```
