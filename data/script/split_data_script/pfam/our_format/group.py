@@ -18,7 +18,7 @@ def main(opts):
         elif op == "-p":
             uniqueProteinDir = value             # All unique protein from target file
         else:
-            print "Wrong options. Options can only contain '-a', '-s', '-p'"
+            print ("Wrong options. Options can only contain '-a', '-s', '-p'")
             sys.exit()
     # accInputDir = 'uniqueProtein.fasta-out.acc'
     # ssInputDir = 'uniqueProtein.fasta-out.ss'
@@ -247,29 +247,41 @@ def groupTwo(accInputDir, ssInputDir, uniqueProteinDir, group_output):
     # max = 0
     reName = r'>.+'
     w = open(group_output, 'w+')
+    tempStr = ''
+    nextL = ''
     with open(accInputDir) as f1, open(ssInputDir) as f2, open(uniqueProteinDir) as f3:
         for acc in f1:
             ss = f2.readline()
-            protein = f3.readline()
             if re.match(reName, acc):
+                if nextL == '':
+                    protein = f3.readline()
+                else:
+                    protein = nextL
                 if acc == ss and protein == acc:
                     continue
                 else:
-                    return 'Error, Three files have different sequence names'
+                    print('Error, Three files have different sequence names')
+                    return 'Error'
             else:
+                protein = ''
+                for nextL in f3:
+                    if not re.match(reName, nextL):
+                        protein += nextL.strip()
+                    else:
+                        break
                 result = merge(acc, ss, protein)
                 # if len(result) > max and len(result) != 277:
                 #     max = len(result)
                 w.write(protein.strip()+'\n')
                 w.write(result + '\n')
-    print '%s : Group Success!'%uniqueProteinDir
+    print ('%s : Group Success!'%uniqueProteinDir)
     # print max
 
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 7:
-        print "usage: group.py -a <acc file> -s <secondary structure file> -p <protein sequence file>"
+        print ("usage: group.py -a <acc file> -s <secondary structure file> -p <protein sequence file>")
         sys.exit()
     opts, args = getopt.getopt(sys.argv[1:], "a:s:p:")
     main(opts)
