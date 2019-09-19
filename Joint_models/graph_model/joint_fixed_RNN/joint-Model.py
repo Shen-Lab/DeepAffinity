@@ -21,8 +21,8 @@ from tflearn.layers.conv import conv_2d, max_pool_2d,conv_1d,max_pool_1d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
 from tflearn.layers.merge_ops import merge
-#from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
-from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+#from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
 
 
@@ -164,7 +164,7 @@ def read_labels(path):
             x.append(float(line)) 
  
     #y = normalize_labels(x)
-    return y
+    return x
 
 
 def read_initial_state_weigths(path,size1,size2):

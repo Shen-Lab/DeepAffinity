@@ -19,8 +19,8 @@ from tflearn.layers.conv import conv_1d, max_pool_1d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
 from tflearn.layers.merge_ops import merge
-#from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
-from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+#from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
 
 def  train_dev_split(train_protein,train_compound,train_kd,dev_perc,comp_MAX_size,protein_MAX_size,batch_size):
