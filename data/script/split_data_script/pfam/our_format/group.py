@@ -264,11 +264,10 @@ def groupTwo(accInputDir, ssInputDir, uniqueProteinDir, group_output):
                     return 'Error'
             else:
                 protein = ''
-                for nextL in f3:
-                    if not re.match(reName, nextL):
-                        protein += nextL.strip()
-                    else:
-                        break
+                nextL = f3.readline()
+                while not re.match(reName, nextL) and nextL != '':
+                    protein += nextL.strip()
+                    nextL = f3.readline()
                 result = merge(acc, ss, protein)
                 # if len(result) > max and len(result) != 277:
                 #     max = len(result)
