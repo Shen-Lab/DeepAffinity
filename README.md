@@ -23,11 +23,15 @@ We recommend referring to PubChem for canonical SMILES for compounds.
 ## Citation:
 If you find the code useful for your research, please consider citing our paper:
 ```
-@article{karimi2018deepaffinity,
-  title={DeepAffinity: Interpretable Deep Learning of Compound-Protein Affinity through Unified Recurrent and Convolutional Neural Networks},
+@article{karimi2019deepaffinity,
+  title={DeepAffinity: interpretable deep learning of compound--protein affinity through unified recurrent and convolutional neural networks},
   author={Karimi, Mostafa and Wu, Di and Wang, Zhangyang and Shen, Yang},
-  journal={arXiv preprint arXiv:1806.07537},
-  year={2018}
+  journal={Bioinformatics},
+  volume={35},
+  number={18},
+  pages={3329--3338},
+  year={2019},
+  publisher={Oxford University Press}
 }
 ```
 
