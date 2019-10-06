@@ -20,6 +20,15 @@ Drug discovery demands rapid quantification of compound-protein interaction  (CP
 	* Joint attention mechanism
 	* Graph convolution neural network (GCNN) with separate attention mechanism
 
+## Testing the model
+To test DeepAffinity for new dataset, please follow the steps below:
+* Download the checkpoints for IC50 from the following [link](https://drive.google.com/drive/folders/1Pwn8uTyHNig4G2JDy0TErzH9hVacSadt?usp=sharing)
+* Copy the checkpoints to the folder "Joint_models/joint_attention/testing/"
+* Put your data in folder "Joint_models/joint_attention/testing/data"
+* cd Joint_models/joint_attention/testing/
+* Run the Python code joint-Model-test.py
+ 
+
 ## Note:
 We recommend referring to PubChem for canonical SMILES for compounds.  
 
