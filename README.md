@@ -8,7 +8,11 @@ Drug discovery demands rapid quantification of compound-protein interaction  (CP
 * Python 3.6
 * [TFLearn](http://tflearn.org/) v0.3
 * [Scikit-learn](https://scikit-learn.org/stable/) v0.19
-
+* Anaconda 3/5.0.0.1
+* We have already provided our environment list as environment.yml. You can create your own environment by:
+'''
+conda env create -f environment.yml
+'''
 ## Table of contents:
 * **data_script**: Contain the supervised learning datasets(pIC50, pKi, pEC50, and pKd)
 * **Seq2seq_models**: Contain auto-encoder seq2seq models and their data for both SPS and SMILE representations
