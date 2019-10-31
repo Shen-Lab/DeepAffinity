@@ -429,7 +429,6 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
 # Training
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
 
-model.load('checkpoints-370700')
 ######### Setting weights
 
 model.set_weights(prot_gru_1_gate_matrix[0],prot_gru_1_gates_kernel_init)
@@ -451,8 +450,8 @@ model.set_weights(drug_gru_2_gate_bias[0],drug_gru_2_gates_bias_init)
 model.set_weights(drug_gru_2_candidate_matrix[0],drug_gru_2_candidate_kernel_init)
 model.set_weights(drug_gru_2_candidate_bias[0],drug_gru_2_candidate_bias_init)
 
-
-
+model.load('checkpoints-1452500')
+'''
 ######## training
 model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,batch_size=64,
            validation_set=([protein_dev,compound_dev], {'target': IC50_dev}),
@@ -460,7 +459,7 @@ model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,ba
 
 # saving save
 model.save('my_model')
-
+'''
 print("error on dev")
 size = 64
 length_dev = len(protein_dev)

@@ -21,8 +21,8 @@ from tflearn.layers.conv import conv_2d, max_pool_2d,conv_1d,max_pool_1d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
 from tflearn.layers.merge_ops import merge
-#from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
-from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
+#from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
 random.seed(1234)
 #### data and vocabulary
@@ -151,7 +151,7 @@ def read_labels(path):
          else:
             x.append(float(line)) 
  
-    return y
+    return x
 
 
 def read_initial_state_weigths(path,size1,size2):
@@ -277,7 +277,7 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
                      loss='mean_square', name='target')
 
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
-checkpoints = 741400
+checkpoints = 1452500
 
 model.load('checkpoints-'+str(checkpoints))
 print("error on test")
