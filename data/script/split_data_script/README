@@ -47,7 +47,7 @@
 	download.igb.uci.edu
    Then use the fasta format of protein sequences as input to get the result. This software will output several files. We only need two files which are ended with ".ss" and ".acc". For us, their names are "uniqueProtein.fasta.acc" and "uniqueProtein.fasta.ss".
    Copy those two files to "our_format" fold and run:
-	python -p uniqueProtein.fasta -a uniqueProtein.fasta.acc -s uniqueProtein.fasta.ss 
+	python group.py -p uniqueProtein.fasta -a uniqueProtein.fasta.acc -s uniqueProtein.fasta.ss 
 
 8. Prepare for classification of proteins. Go to the "uniprotID_Dict" folder in the root path and extract the unique uniprot ID as:
 	python extractUniID.py
