@@ -37,7 +37,10 @@
    And you need to download the Pfam family accession number list (Pfam-A.clans.tsv.gz) and preprocessed Pfam database (Pfam-A.hmm.gz) for Hmmer from:
 	ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam31.0/
    The version we used is hmmer-3.2.1 and Pfam 31.0.
-   After installing the software properly, please put the Pfam-A.hmm under the pfam folder and copy it to the hmmer directory and run this command in the pfam folder:
+   After installing the software properly, please put the Pfam-A.hmm under the pfam folder and copy it to the hmmer directory.
+   Before run the hmmer, you need to compress the database first by:
+   	hmmpress Pfam_A.hmm
+   After putting all files under the pfam folder, the please run this command in the pfam folder:
 	../src/hmmscan --tblout uniqueProtein.output --cpu 5 --acc --cut_ga ../pfam/Pfam-A.hmm uniqueProtein.fasta
    "../src/hmmscan" is the hmmscan program path, the "uniqueProtein.output" is the output file name, "./pfam/Pfam-A.hmm" is the preprocessed database path, "uniqueProtein.fasta" is the input FASTA format file.
    Put the output file to the pfam folder and run:
