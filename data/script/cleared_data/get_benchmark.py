@@ -128,7 +128,7 @@ def main(dataDir):
 				dcid_fea_writer.writerow([smi_id,fea])
 				dcid_smi_writer.writerow([smi_id,smi])
 				dcid_id[cid] = smi_id
-	print 'Dictionary loaded'
+	print('Dictionary loaded')
 
 	dirpath = "SDF"
 	os.system("mkdir "+dirpath)
@@ -328,53 +328,53 @@ def main(dataDir):
 	dpid_seq.close()
 	dpid_dom.close()
 
-	print 'split conmplete\n\n\n'
+	print('split conmplete\n\n\n')
 
-	print '---------------------IC50 Statistic----------------------'
-	print 'Total number: %d' %countic
+	print('---------------------IC50 Statistic----------------------')
+	print('Total number: %d' %countic)
 	# print 'Train: %d' %count1_ic
 	# print 'GPCR: %d' %count2_ic
 	# print 'ER: %d' %count3_ic
 	# print 'channel: %d' %count4_ic
 	# print 'kinase: %d' %count5_ic
 	# print 'Test: %d' %count6_ic
-	print 'No IC50: %d' % noicC
-	print 'Dropped cases: %d\n' %dropicC
+	print('No IC50: %d' % noicC)
+	print('Dropped cases: %d\n' %dropicC)
 
-	print '---------------------EC50 Statistic----------------------'
-	print 'Total number: %d' %countec
+	print('---------------------EC50 Statistic----------------------')
+	print('Total number: %d' %countec)
 	# print 'Train: %d' %count1_ec
 	# print 'GPCR: %d' %count2_ec
 	# print 'ER: %d' %count3_ec
 	# print 'channel: %d' %count4_ec
 	# print 'kinase: %d' %count5_ec
 	# print 'Test: %d' %count6_ec
-	print 'No EC50: %d' % noecC
-	print 'Dropped cases: %d\n' %dropecC
+	print('No EC50: %d' % noecC)
+	print('Dropped cases: %d\n' %dropecC)
 
-	print '---------------------Ki Statistic----------------------'
-	print 'Total number: %d' % countki
+	print('---------------------Ki Statistic----------------------')
+	print('Total number: %d' % countki)
 	# print 'Train: %d' % count1_ki
 	# print 'GPCR: %d' % count2_ki
 	# print 'ER: %d' % count3_ki
 	# print 'channel: %d' % count4_ki
 	# print 'kinase: %d' % count5_ki
 	# print 'Test: %d' % count6_ki
-	print 'No Ki: %d' % nokiC
-	print 'Dropped cases: %d\n' % dropkiC
+	print('No Ki: %d' % nokiC)
+	print('Dropped cases: %d\n' % dropkiC)
 
-	print '---------------------Kd Statistic----------------------'
-	print 'Total number: %d' % countkd
+	print('---------------------Kd Statistic----------------------')
+	print('Total number: %d' % countkd)
 	# print 'Train: %d' % count1_kd
 	# print 'GPCR: %d' % count2_kd
 	# print 'ER: %d' % count3_kd
 	# print 'channel: %d' % count4_kd
 	# print 'kinase: %d' % count5_kd
 	# print 'Test: %d' % count6_kd
-	print 'No Kd: %d' % nokdC
-	print 'Dropped cases: %d\n' % dropkdC
+	print('No Kd: %d' % nokdC)
+	print('Dropped cases: %d\n' % dropkdC)
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
-		print "usage: split.py <data directory>"
+		print("usage: split.py <data directory>")
 	main(sys.argv[1])

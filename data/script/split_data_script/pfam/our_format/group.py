@@ -18,7 +18,7 @@ def main(opts):
         elif op == "-p":
             uniqueProteinDir = value             # All unique protein from target file
         else:
-            print ("Wrong options. Options can only contain '-a', '-s', '-p'")
+            print("Wrong options. Options can only contain '-a', '-s', '-p'")
             sys.exit()
     # accInputDir = 'uniqueProtein.fasta-out.acc'
     # ssInputDir = 'uniqueProtein.fasta-out.ss'
@@ -273,14 +273,14 @@ def groupTwo(accInputDir, ssInputDir, uniqueProteinDir, group_output):
                 #     max = len(result)
                 w.write(protein.strip()+'\n')
                 w.write(result + '\n')
-    print ('%s : Group Success!'%uniqueProteinDir)
+    print('%s : Group Success!'%uniqueProteinDir)
     # print max
 
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 7:
-        print ("usage: group.py -a <acc file> -s <secondary structure file> -p <protein sequence file>")
+        print("usage: group.py -a <acc file> -s <secondary structure file> -p <protein sequence file>")
         sys.exit()
     opts, args = getopt.getopt(sys.argv[1:], "a:s:p:")
     main(opts)

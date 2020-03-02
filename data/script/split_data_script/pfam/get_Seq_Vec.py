@@ -26,7 +26,7 @@ with open(fileName) as f1, open(fileName_result) as f2:
         else:
             seq = line.strip()
             if index in id_seq:
-                print 'error'
+                print('error')
             id_seq[index] = seq
 
     for line in f2:
@@ -36,7 +36,7 @@ with open(fileName) as f1, open(fileName_result) as f2:
             index = re.search(reResult,line).group(2).strip()
             pf = re.search(reResult,line).group(1).strip()
             if "PF" not in pf:
-                print line
+                print(line)
             if index in id_pf:
                 id_pf[index].add(pf)
             else:
@@ -54,4 +54,4 @@ for index in id_seq:
     w.write(id_seq[index] + '\n' + pfString + '\n')
 w.close()
 w1.close()
-print 'Success!'
+print('Success!')

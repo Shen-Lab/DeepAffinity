@@ -23,7 +23,7 @@ def main():
                 w = open(fileName,'w+')
                 i = 0
             count += 1
-    print "cid number: %d" %count
+    print("cid number: %d" %count)
     # print total
 
 

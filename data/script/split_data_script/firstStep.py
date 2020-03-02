@@ -159,7 +159,7 @@ def main():
                             elif lesM == 0 and larM == 1:
                                 icMean = '>' + str(icMean)
                             else:
-                                print "Error: No Inequality or both directions"
+                                print("Error: No Inequality or both directions")
                         elif exactVM == 1:
                             for ic in icList:
                                 if ic != '' and not re.search(r'[<>=]',ic):
@@ -209,7 +209,7 @@ def main():
                             elif lesM == 0 and larM == 1:
                                 kiMean = '>' + str(kiMean)
                             else:
-                                print "Error: No Inequality or both directions"
+                                print("Error: No Inequality or both directions")
                         elif exactVM == 1:
                             for ki in kiList:
                                 if ki != '' and not re.search(r'[<>=]',ki):
@@ -259,7 +259,7 @@ def main():
                             elif lesM == 0 and larM == 1:
                                 kdMean = '>' + str(kdMean)
                             else:
-                                print "Error: No Inequality or both directions"
+                                print("Error: No Inequality or both directions")
                         elif exactVM == 1:
                             for kd in kdList:
                                 if kd != '' and not re.search(r'[<>=]',kd):
@@ -286,7 +286,7 @@ def main():
                 writer.writerow(row)
                 # mergeW.writerow(row)
                 count += 1
-        print "Final number: %d" %count
+        print("Final number: %d" %count)
 
 
 

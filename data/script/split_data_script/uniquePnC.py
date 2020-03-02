@@ -45,8 +45,8 @@ def main():
                 uniqueC.write(cid + '\n')
                 cidDic.add(cid)
                 countC += 1
-    print "cid number: %d" %countC
-    print "protein number: %d" %countP
+    print("cid number: %d" %countC)
+    print("protein number: %d" %countP)
     # print total
 
 

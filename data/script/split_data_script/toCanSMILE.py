@@ -32,7 +32,7 @@ def main():
                 can = f.next().strip()
             elif line.strip() == '$$$$':
                 cid_can[cid] = can
-    print "Dictionary Loaded!"
+    print("Dictionary Loaded!")
     with open('BindingDB_All_firststep_noMulti.tsv') as tsvfile, open('BindingDB_All_firststep_noMulti_can.tsv','w+') as csvout:
         reader = csv.reader(tsvfile, delimiter="\t",quoting=csv.QUOTE_NONE)
         writer = csv.writer(csvout, dialect='excel-tab')
@@ -50,7 +50,7 @@ def main():
                 total += 1
                 writer.writerow(row)
             dropM = 0
-    print total
+    print(total)
     # print countDrop
 
 

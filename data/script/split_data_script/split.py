@@ -352,7 +352,7 @@ def main(dataDir):
 				fea = f.next().strip()
 			elif line == '$$$$':
 				cid_fea[cid] = fea
-	print 'Dictionary loaded'
+	print('Dictionary loaded')
 
 	with open(dataDir) as f, open('noUniprotID.tsv','w+') as tsvout:
 		noUniprotID = csv.writer(tsvout, dialect='excel-tab')
@@ -399,7 +399,7 @@ def main(dataDir):
 			seq = row[37]
 			uid = row[41]
 			if seq not in seq_dom:
-				print row
+				print(row)
 			domain = pos2vec(seq_dom[seq])
 			#domain = seq_dom[seq]
 			feature = cid_fea[cid]
@@ -1000,53 +1000,53 @@ def main(dataDir):
 	sps_kd_w4_sps.close()
 	sps_kd_w5_sps.close()
 	sps_kd_w6_sps.close()
-	print 'split conmplete\n\n\n'
+	print('split conmplete\n\n\n')
 
-	print '---------------------IC50 Statistic----------------------'
-	print 'Total number: %d' %countic
-	print 'Train: %d' %count1_ic
-	print 'GPCR: %d' %count2_ic
-	print 'ER: %d' %count3_ic
-	print 'channel: %d' %count4_ic
-	print 'kinase: %d' %count5_ic
-	print 'Test: %d' %count6_ic
-	print 'No IC50: %d' % noicC
-	print 'Dropped cases: %d\n' %dropicC
+	print('---------------------IC50 Statistic----------------------')
+	print('Total number: %d' %countic)
+	print('Train: %d' %count1_ic)
+	print('GPCR: %d' %count2_ic)
+	print('ER: %d' %count3_ic)
+	print('channel: %d' %count4_ic)
+	print('kinase: %d' %count5_ic)
+	print('Test: %d' %count6_ic)
+	print('No IC50: %d' % noicC)
+	print('Dropped cases: %d\n' %dropicC)
 
-	print '---------------------EC50 Statistic----------------------'
-	print 'Total number: %d' %countec
-	print 'Train: %d' %count1_ec
-	print 'GPCR: %d' %count2_ec
-	print 'ER: %d' %count3_ec
-	print 'channel: %d' %count4_ec
-	print 'kinase: %d' %count5_ec
-	print 'Test: %d' %count6_ec
-	print 'No EC50: %d' % noecC
-	print 'Dropped cases: %d\n' %dropecC
+	print('---------------------EC50 Statistic----------------------')
+	print('Total number: %d' %countec)
+	print('Train: %d' %count1_ec)
+	print('GPCR: %d' %count2_ec)
+	print('ER: %d' %count3_ec)
+	print('channel: %d' %count4_ec)
+	print('kinase: %d' %count5_ec)
+	print('Test: %d' %count6_ec)
+	print('No EC50: %d' % noecC)
+	print('Dropped cases: %d\n' %dropecC)
 
-	print '---------------------Ki Statistic----------------------'
-	print 'Total number: %d' % countki
-	print 'Train: %d' % count1_ki
-	print 'GPCR: %d' % count2_ki
-	print 'ER: %d' % count3_ki
-	print 'channel: %d' % count4_ki
-	print 'kinase: %d' % count5_ki
-	print 'Test: %d' % count6_ki
-	print 'No Ki: %d' % nokiC
-	print 'Dropped cases: %d\n' % dropkiC
+	print('---------------------Ki Statistic----------------------')
+	print('Total number: %d' % countki)
+	print('Train: %d' % count1_ki)
+	print('GPCR: %d' % count2_ki)
+	print('ER: %d' % count3_ki)
+	print('channel: %d' % count4_ki)
+	print('kinase: %d' % count5_ki)
+	print('Test: %d' % count6_ki)
+	print('No Ki: %d' % nokiC)
+	print('Dropped cases: %d\n' % dropkiC)
 
-	print '---------------------Kd Statistic----------------------'
-	print 'Total number: %d' % countkd
-	print 'Train: %d' % count1_kd
-	print 'GPCR: %d' % count2_kd
-	print 'ER: %d' % count3_kd
-	print 'channel: %d' % count4_kd
-	print 'kinase: %d' % count5_kd
-	print 'Test: %d' % count6_kd
-	print 'No Kd: %d' % nokdC
-	print 'Dropped cases: %d\n' % dropkdC
+	print('---------------------Kd Statistic----------------------')
+	print('Total number: %d' % countkd)
+	print('Train: %d' % count1_kd)
+	print('GPCR: %d' % count2_kd)
+	print('ER: %d' % count3_kd)
+	print('channel: %d' % count4_kd)
+	print('kinase: %d' % count5_kd)
+	print('Test: %d' % count6_kd)
+	print('No Kd: %d' % nokdC)
+	print('Dropped cases: %d\n' % dropkdC)
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
-		print "usage: split.py <data directory>"
+		print("usage: split.py <data directory>")
 	main(sys.argv[1])

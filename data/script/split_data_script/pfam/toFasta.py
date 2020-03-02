@@ -12,7 +12,7 @@ def main():
     with open('uniqueProtein') as f:
         for line in f:
             if line.strip() == '':
-                print 'error'
+                print('error')
                 
             else:
                 w.write('>'+str(num)+'\n')
@@ -24,7 +24,7 @@ def main():
             #     w.close()
             #     w = open('Seq'+str(fileC),'w+')
             #     i = 0
-    print num
+    print(num)
 
 
 

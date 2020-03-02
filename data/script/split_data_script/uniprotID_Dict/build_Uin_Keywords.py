@@ -63,7 +63,7 @@ def main():
                 uniID = line.strip()
             gene, keywordID, keywordName, goID, goName = getID_Name(uniID)
             if gene == -1:
-                print uni
+                print(uni)
             uniprot_keywords_ID = '|'.join(term for term in keywordID)
             uniprot_keywords_name = '|'.join(term for term in keywordName)
             GO_keywords_ID = '|'.join(term for term in goID)

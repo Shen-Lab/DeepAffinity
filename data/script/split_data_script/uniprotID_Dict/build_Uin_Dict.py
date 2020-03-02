@@ -77,7 +77,7 @@ def main():
                     uniClass = 'channel'
                     mark += 1
             if mark >= 2:
-                print row
+                print(row)
             else:
                 w.write(uniID + '\n' + uniClass + '\n')
             mark = 0
