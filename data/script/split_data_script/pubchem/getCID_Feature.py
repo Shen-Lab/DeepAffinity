@@ -27,11 +27,12 @@ def decode64(string):
     return result[32:-7]
 
 def main():
+    fileNum = 3
     count = 0
     fileC = 1
     i = 0
     w = open("CID_Smi_Feature", 'w+')
-    for i in range(1,4):
+    for i in range(1,fileNum+1):
         resultFile = 'CID' + str(i) + '.sdf'
         with open(resultFile) as f:
             storeStr = ''
