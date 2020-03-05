@@ -299,7 +299,9 @@ test_protein = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_
 test_compound = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 test_IC50 = read_labels("./data/test_ic50")
 
-
+train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
+train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
+train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
 
 ## separating train,dev, test data
 compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev = train_dev_split(train_protein,train_compound,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size)
@@ -450,8 +452,8 @@ model.set_weights(drug_gru_2_gate_bias[0],drug_gru_2_gates_bias_init)
 model.set_weights(drug_gru_2_candidate_matrix[0],drug_gru_2_candidate_kernel_init)
 model.set_weights(drug_gru_2_candidate_bias[0],drug_gru_2_candidate_bias_init)
 
-model.load('checkpoints-1452500')
-'''
+#model.load('checkpoints-1452500')
+
 ######## training
 model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,batch_size=64,
            validation_set=([protein_dev,compound_dev], {'target': IC50_dev}),
@@ -459,7 +461,7 @@ model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,ba
 
 # saving save
 model.save('my_model')
-'''
+
 print("error on dev")
 size = 64
 length_dev = len(protein_dev)

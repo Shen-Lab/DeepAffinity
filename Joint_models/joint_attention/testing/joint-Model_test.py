@@ -277,7 +277,7 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
                      loss='mean_square', name='target')
 
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
-checkpoints = 1452500
+checkpoints = 741400
 
 model.load('checkpoints-'+str(checkpoints))
 print("error on test")
