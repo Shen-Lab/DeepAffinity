@@ -11,7 +11,7 @@ Drug discovery demands rapid quantification of compound-protein interaction  (CP
 * Anaconda 3/5.0.0.1
 * We have already provided our environment list as environment.yml. You can create your own environment by:
 ```
-conda env create -f environment.yml
+conda env create -n envname -f environment.yml
 ```
 ## Table of contents:
 * **data_script**: Contain the supervised learning datasets(pIC50, pKi, pEC50, and pKd)
