@@ -24,24 +24,20 @@ from tflearn.layers.merge_ops import merge
 from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 #from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
-
-
-from rdkit import Chem
-
 random.seed(1234)
 #### data and vocabulary
 
 data_dir="./data"
 vocab_size_compound=68
 vocab_size_protein=76
-comp_MAX_size=70
+comp_MAX_size=100
 protein_MAX_size=152
 vocab_compound="vocab_compound"
 vocab_protein="vocab_protein"
 batch_size = 64
 
 GRU_size_prot=256
-GRU_size_drug=64
+GRU_size_drug=128
 
 dev_perc=0.1
 
@@ -143,7 +139,6 @@ def prepare_data(data_dir, train_path, vocabulary_size,vocab,max_size,condition)
   
   return train_set
 
-
 def normalize_labels(label):
    x = []
    micro=1000000
@@ -153,6 +148,7 @@ def normalize_labels(label):
       m = -math.log10(i)+math.log10(micro)
       x.append(m)
    return x
+
 
 def read_labels(path):
     x = []
@@ -181,7 +177,7 @@ def read_initial_state_weigths(path,size1,size2):
     
     return x
 
-def  train_dev_split(train_protein,train_compound_ver,train_compound_adj,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size):
+def  train_dev_split(train_protein,train_compound,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size):
     num_whole= len(train_IC50)
     num_train = math.ceil(num_whole*(1-dev_perc)/batch_size)*batch_size
     num_dev = math.floor((num_whole - num_train)/batch_size)*batch_size
@@ -191,17 +187,10 @@ def  train_dev_split(train_protein,train_compound_ver,train_compound_adj,train_I
     remain = list(set(index_total)^set(index_dev))
     index_train = sorted(random.sample(remain,num_train))
 
-    compound_train_ver = [train_compound_ver[i] for i in index_train]
-    compound_train_ver = np.reshape(compound_train_ver,[len(compound_train_ver),comp_MAX_size])
-    compound_dev_ver = [train_compound_ver[i] for i in index_dev]
-    compound_dev_ver = np.reshape(compound_dev_ver,[len(compound_dev_ver),comp_MAX_size])
-
-
-    compound_train_adj = [train_compound_adj[i] for i in index_train]
-    compound_train_adj = np.reshape(compound_train_adj,[len(compound_train_adj),comp_MAX_size,comp_MAX_size])
-    compound_dev_adj = [train_compound_adj[i] for i in index_dev]
-    compound_dev_adj = np.reshape(compound_dev_adj,[len(compound_dev_adj),comp_MAX_size,comp_MAX_size])
-
+    compound_train = [train_compound[i] for i in index_train]
+    compound_train = np.reshape(compound_train,[len(compound_train),comp_MAX_size])
+    compound_dev = [train_compound[i] for i in index_dev]
+    compound_dev = np.reshape(compound_dev,[len(compound_dev),comp_MAX_size])
 
     IC50_train = [train_IC50[i] for i in index_train]
     IC50_train = np.reshape(IC50_train,[len(IC50_train),1])
@@ -213,61 +202,7 @@ def  train_dev_split(train_protein,train_compound_ver,train_compound_adj,train_I
     protein_dev = [train_protein[i] for i in index_dev]
     protein_dev = np.reshape(protein_dev,[len(protein_dev),protein_MAX_size])
 
-    return compound_train_ver, compound_dev_ver,compound_train_adj, compound_dev_adj, IC50_train, IC50_dev, protein_train, protein_dev
-
-##################### Graph
-def read_graph(source_path,MAX_size):
-  Vertex = []
-  Adj = [] # Normalized adjacency matrix
-  mycount=1
-  PAD=0
-  mydict={}
-  max_size=0
-  with tf.gfile.GFile(source_path, mode="r") as source_file:
-      source = source_file.readline().strip()
-      counter = 0
-      while source:
-        mol = Chem.MolFromSmiles(source)
-        atom_list = []
-        for a in mol.GetAtoms():
-            m = a.GetSymbol()
-            if m not in mydict:
-              mydict[m]=mycount
-              mycount = mycount +1
-            
-            atom_list.append(mydict[m])
-
-        if len(atom_list) > max_size:
-           max_size = len(atom_list)
-
-
-        if len(atom_list) < MAX_size:
-           pad = [PAD] * (MAX_size - len(atom_list))
-           atom_list = atom_list+pad
-
-        
-        vertex = np.array(atom_list, np.int32)
-        Vertex.append(vertex)
-
-        adja_mat = Chem.GetAdjacencyMatrix(mol)
-        adj_temp = []
-        for adja in adja_mat:
-            if len(adja) < MAX_size:
-               pad = [PAD]*(MAX_size - len(adja))
-               adja = np.array(list(adja)+pad,np.int32)
-            adj_temp.append(adja)
-      
-        cur_len = len(adj_temp)
-        for i in range(MAX_size - cur_len):
-            adja =np.array( [PAD]*MAX_size,np.int32)
-            adj_temp.append(adja)
-
-        adj_temp = adj_temp + np.eye(MAX_size) # A_hat = A + I
-        Adj.append(adj_temp) 
-        source = source_file.readline().strip()
-  return Vertex,Adj,max_size
-
-
+    return compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev
 
 ################ Reading initial states and weigths 
 prot_gru_1_candidate_bias_init = read_initial_state_weigths("./data/prot_init/cell_0_candidate_bias.txt",1,GRU_size_prot)
@@ -304,41 +239,72 @@ prot_init_state_2 = read_initial_state_weigths("./data/prot_init/second_layer_st
 prot_init_state_2 = tf.convert_to_tensor(np.reshape(prot_init_state_2,[batch_size,GRU_size_prot]),dtype=tf.float32)
 
 
+drug_gru_1_candidate_bias_init = read_initial_state_weigths("./data/drug_init/cell_0_candidate_bias.txt",1,GRU_size_drug)
+drug_gru_1_candidate_bias_init = tf.convert_to_tensor(np.reshape(drug_gru_1_candidate_bias_init,[GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_1_candidate_kernel_init = read_initial_state_weigths("./data/drug_init/cell_0_candidate_kernel.txt",2*GRU_size_drug,GRU_size_drug)
+drug_gru_1_candidate_kernel_init = tf.convert_to_tensor(np.reshape(drug_gru_1_candidate_kernel_init,[2*GRU_size_drug,GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_1_gates_bias_init = read_initial_state_weigths("./data/drug_init/cell_0_gates_bias.txt",1,2*GRU_size_drug)
+drug_gru_1_gates_bias_init = tf.convert_to_tensor(np.reshape(drug_gru_1_gates_bias_init,[2*GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_1_gates_kernel_init = read_initial_state_weigths("./data/drug_init/cell_0_gates_kernel.txt",2*GRU_size_drug,2*GRU_size_drug)
+drug_gru_1_gates_kernel_init = tf.convert_to_tensor(np.reshape(drug_gru_1_gates_kernel_init,[2*GRU_size_drug,2*GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_2_candidate_bias_init = read_initial_state_weigths("./data/drug_init/cell_1_candidate_bias.txt",1,GRU_size_drug)
+drug_gru_2_candidate_bias_init = tf.convert_to_tensor(np.reshape(drug_gru_2_candidate_bias_init,[GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_2_candidate_kernel_init = read_initial_state_weigths("./data/drug_init/cell_1_candidate_kernel.txt",2*GRU_size_drug,GRU_size_drug)
+drug_gru_2_candidate_kernel_init = tf.convert_to_tensor(np.reshape(drug_gru_2_candidate_kernel_init,[2*GRU_size_drug,GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_2_gates_bias_init = read_initial_state_weigths("./data/drug_init/cell_1_gates_bias.txt",1,2*GRU_size_drug)
+drug_gru_2_gates_bias_init = tf.convert_to_tensor(np.reshape(drug_gru_2_gates_bias_init,[2*GRU_size_drug]),dtype=tf.float32)
+
+drug_gru_2_gates_kernel_init = read_initial_state_weigths("./data/drug_init/cell_1_gates_kernel.txt",2*GRU_size_drug,2*GRU_size_drug)
+drug_gru_2_gates_kernel_init = tf.convert_to_tensor(np.reshape(drug_gru_2_gates_kernel_init,[2*GRU_size_drug,2*GRU_size_drug]),dtype=tf.float32)
+
+drug_embd_init = read_initial_state_weigths("./data/drug_init/embedding_W.txt",vocab_size_compound,GRU_size_drug)
+drug_embd_init = tf.convert_to_tensor(np.reshape(drug_embd_init,[vocab_size_compound,GRU_size_drug]),dtype=tf.float32)
+
+drug_init_state_1 = read_initial_state_weigths("./data/drug_init/first_layer_states.txt",batch_size,GRU_size_drug)
+drug_init_state_1 = tf.convert_to_tensor(np.reshape(drug_init_state_1,[batch_size,GRU_size_drug]),dtype=tf.float32)
+
+drug_init_state_2 = read_initial_state_weigths("./data/drug_init/second_layer_states.txt",batch_size,GRU_size_drug)
+drug_init_state_2 = tf.convert_to_tensor(np.reshape(drug_init_state_2,[batch_size,GRU_size_drug]),dtype=tf.float32)
+
 ## preparing data 
 
-
 ER_protein = prepare_data(data_dir,"./data/ER_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-ER_compound_ver,ER_compound_adj,ER_compound_max = read_graph("./data/ER_smile",comp_MAX_size)
+ER_compound = prepare_data(data_dir,"./data/ER_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 ER_IC50 = read_labels("./data/ER_ic50")
-print(ER_compound_max)
 
 GPCR_protein = prepare_data(data_dir,"./data/GPCR_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-GPCR_compound_ver,GPCR_compound_adj,GPCR_compound_max = read_graph("./data/GPCR_smile",comp_MAX_size)
+GPCR_compound = prepare_data(data_dir,"./data/GPCR_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 GPCR_IC50 = read_labels("./data/GPCR_ic50")
-print(GPCR_compound_max)
 
 kinase_protein = prepare_data(data_dir,"./data/kinase_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-kinase_compound_ver,kinase_compound_adj,kinase_compound_max = read_graph("./data/kinase_smile",comp_MAX_size)
+kinase_compound = prepare_data(data_dir,"./data/kinase_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 kinase_IC50 = read_labels("./data/kinase_ic50")
-print(kinase_compound_max)
 
 channel_protein = prepare_data(data_dir,"./data/channel_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-channel_compound_ver,channel_compound_adj,channel_compound_max = read_graph("./data/channel_smile",comp_MAX_size)
+channel_compound = prepare_data(data_dir,"./data/channel_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 channel_IC50 = read_labels("./data/channel_ic50")
-print(channel_compound_max)
+
 
 train_protein = prepare_data(data_dir,"./data/train_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-train_compound_ver,train_compound_adj,train_compound_max = read_graph("./data/train_smile",comp_MAX_size)
+train_compound = prepare_data(data_dir,"./data/train_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 train_IC50 = read_labels("./data/train_ic50")
-print(train_compound_max)
 
 test_protein = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
-test_compound_ver,test_compound_adj,test_compound_max = read_graph("./data/test_smile",comp_MAX_size)
+test_compound = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 test_IC50 = read_labels("./data/test_ic50")
-print(test_compound_max)
+
+train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
+train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
+train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
 
 ## separating train,dev, test data
-compound_train_ver, compound_dev_ver,compound_train_adj, compound_dev_adj, IC50_train, IC50_dev, protein_train, protein_dev = train_dev_split(train_protein,train_compound_ver,train_compound_adj,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size)
+compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev = train_dev_split(train_protein,train_compound,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size)
 
 ## RNN for protein
 prot_data = input_data(shape=[None, protein_MAX_size])
@@ -347,17 +313,50 @@ prot_gru_1 = tflearn.gru(prot_embd, GRU_size_prot,initial_state= prot_init_state
 prot_gru_1 = tf.stack(prot_gru_1,axis=1)
 prot_gru_2 = tflearn.gru(prot_gru_1, GRU_size_prot,initial_state= prot_init_state_2,trainable=True,return_seq=True,restore=False)
 prot_gru_2=tf.stack(prot_gru_2,axis=1)
-W_prot = tflearn.variables.variable(name="Attn_W_prot",shape=[GRU_size_prot,GRU_size_prot],initializer=tf.random_normal([GRU_size_prot,GRU_size_prot],stddev=0.1),restore=False)
-b_prot = tflearn.variables.variable(name="Attn_b_prot",shape=[GRU_size_prot],initializer=tf.random_normal([GRU_size_prot],stddev=0.1),restore=False)
-U_prot = tflearn.variables.variable(name="Attn_U_prot",shape=[GRU_size_prot],initializer=tf.random_normal([GRU_size_prot],stddev=0.1),restore=False)
-V_prot = tf.tanh(tf.tensordot(prot_gru_2,W_prot,axes=1)+b_prot)
-VU_prot = tf.tensordot(V_prot,U_prot,axes=1)
-alphas_prot = tf.nn.softmax(VU_prot,name='alphas')
-Attn_prot = tf.reduce_sum(prot_gru_2 *tf.expand_dims(alphas_prot,-1),1)
-Attn_prot_reshape = tflearn.reshape(Attn_prot, [-1, GRU_size_prot,1])
-conv_1 = conv_1d(Attn_prot_reshape, 64, 8,4, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv1')
+
+drug_data = input_data(shape=[None, comp_MAX_size])
+drug_embd = tflearn.embedding(drug_data, input_dim=vocab_size_compound, output_dim=GRU_size_drug)
+drug_gru_1 = tflearn.gru(drug_embd,GRU_size_drug,initial_state= drug_init_state_1,trainable=True,return_seq=True,restore=False)
+drug_gru_1 = tf.stack(drug_gru_1,1)
+drug_gru_2 = tflearn.gru(drug_gru_1, GRU_size_drug,initial_state= drug_init_state_2,trainable=True,return_seq=True,restore=False)
+drug_gru_2 = tf.stack(drug_gru_2,axis=1)
+
+
+W = tflearn.variables.variable(name="Attn_W_prot",shape=[GRU_size_prot,GRU_size_drug],initializer=tf.random_normal([GRU_size_prot,GRU_size_drug],stddev=0.1),restore=False)
+b = tflearn.variables.variable(name="Attn_b_prot",shape=[protein_MAX_size,comp_MAX_size],initializer=tf.random_normal([protein_MAX_size,comp_MAX_size],stddev=0.1),restore=False)
+V = tf.tensordot(prot_gru_2,W,axes=[[2],[0]])
+for i in range(batch_size):
+   temp = tf.expand_dims(tf.tanh(tf.tensordot(tflearn.reshape(tf.slice(V,[i,0,0],[1,protein_MAX_size,GRU_size_drug]),[protein_MAX_size,GRU_size_drug]),tflearn.reshape(tf.slice(drug_gru_2,[i,0,0],[1,comp_MAX_size,GRU_size_drug]),[comp_MAX_size,GRU_size_drug]),axes=[[1],[1]])+b),0)
+   if i==0:
+     VU = temp
+   else:
+     VU = merge([VU,temp],mode='concat',axis=0)
+
+VU = tflearn.reshape(VU,[-1,comp_MAX_size*protein_MAX_size])
+alphas_pair = tf.nn.softmax(VU,name='alphas')
+alphas_pair = tflearn.reshape(alphas_pair,[-1,protein_MAX_size,comp_MAX_size])
+
+U_size = 256
+U_prot = tflearn.variables.variable(name="Attn_U_prot",shape=[U_size,GRU_size_prot],initializer=tf.random_normal([U_size,GRU_size_prot],stddev=0.1),restore=False)
+U_drug = tflearn.variables.variable(name="Attn_U_drug",shape=[U_size,GRU_size_drug],initializer=tf.random_normal([U_size,GRU_size_drug],stddev=0.1),restore=False)
+B = tflearn.variables.variable(name="Attn_B",shape=[U_size],initializer=tf.random_normal([U_size],stddev=0.1),restore=False)
+
+prod_drug = tf.tensordot(drug_gru_2,U_drug,axes=[[2],[1]])
+prod_prot = tf.tensordot(prot_gru_2,U_prot,axes=[[2],[1]])
+
+Attn = tflearn.variables.variable(name="Attn",shape=[batch_size,U_size],initializer=tf.zeros([batch_size,U_size]),restore=False)
+for i in range(comp_MAX_size):
+        temp = tf.expand_dims(tflearn.reshape(tf.slice(prod_drug,[0,i,0],[batch_size,1,U_size]),[batch_size,U_size]),axis=1) + prod_prot + B
+        Attn = Attn + tf.reduce_sum(tf.multiply(tf.tile(tflearn.reshape(tf.slice(alphas_pair,[0,0,i],[batch_size,protein_MAX_size,1]),[batch_size,protein_MAX_size,1]),[1,1,U_size]),temp),axis=1)
+
+
+Attn_reshape = tflearn.reshape(Attn, [-1, U_size,1])
+conv_1 = conv_1d(Attn_reshape, 64, 4,2, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv1')
 pool_1 = max_pool_1d(conv_1, 4,name='pool1')
-prot_reshape_6 = tflearn.reshape(pool_1, [-1, 64*16])
+#conv_2 = conv_1d(pool_1, 64, 4,2, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv2')
+#pool_2 = max_pool_1d(conv_2, 4,name='pool2')
+
+pool_2 = tflearn.reshape(pool_1, [-1, 64*32])
 
 
 
@@ -390,41 +389,38 @@ for v in tf.global_variables():
    elif "Embedding" in v.name:
       prot_embd_W.append(v)
 
-## RNN for drug
-drug_data_ver = input_data(shape=[None, comp_MAX_size])
-drug_data_adj = input_data(shape=[None, comp_MAX_size, comp_MAX_size])
-drug_embd = tflearn.embedding(drug_data_ver, input_dim=vocab_size_compound, output_dim=GRU_size_drug)
 
-W_drug = tflearn.variables.variable(name="W_drug",shape=[5,GRU_size_drug,GRU_size_drug],initializer=tf.random_normal([5,GRU_size_drug,GRU_size_drug],stddev=0.1),restore=True)
+drug_embd_W = []
+drug_gru_1_gate_matrix = []
+drug_gru_1_gate_bias = []
+drug_gru_1_candidate_matrix = []
+drug_gru_1_candidate_bias = []
+drug_gru_2_gate_matrix = []
+drug_gru_2_gate_bias = []
+drug_gru_2_candidate_matrix = []
+drug_gru_2_candidate_bias = []
+for v in tf.global_variables():
+   print(v)
+   if "GRU_2/GRU_2/GRUCell/Gates/Linear/Matrix" in v.name :
+      drug_gru_1_gate_matrix.append(v)
+   elif "GRU_2/GRU_2/GRUCell/Candidate/Linear/Matrix" in v.name :
+      drug_gru_1_candidate_matrix.append(v)
+   elif "GRU_2/GRU_2/GRUCell/Gates/Linear/Bias" in v.name :
+      drug_gru_1_gate_bias.append(v)
+   elif "GRU_2/GRU_2/GRUCell/Candidate/Linear/Bias" in v.name :
+      drug_gru_1_candidate_bias.append(v)
+   elif "GRU_3/GRU_3/GRUCell/Gates/Linear/Matrix" in v.name :
+      drug_gru_2_gate_matrix.append(v)
+   elif "GRU_3/GRU_3/GRUCell/Candidate/Linear/Matrix" in v.name :
+      drug_gru_2_candidate_matrix.append(v)
+   elif "GRU_3/GRU_3/GRUCell/Gates/Linear/Bias" in v.name :
+      drug_gru_2_gate_bias.append(v)
+   elif "GRU_3/GRU_3/GRUCell/Candidate/Linear/Bias" in v.name :
+      drug_gru_2_candidate_bias.append(v)
+   elif "Embedding_1" in v.name:
+      drug_embd_W.append(v)
 
-deg = tf.cast(tf.reduce_sum(drug_data_adj,axis=2)-1,dtype=tf.int32)
-W_chosen = tf.tensordot(tf.one_hot(deg,depth=5,on_value=1.0, off_value=0.0),W_drug,axes=[[2],[0]])
-
-batch_mul_drug_1 = tf.einsum('bij,bjk->bik', drug_data_adj, drug_embd)
-drug_GCN_1 = tf.nn.relu(tf.einsum('pqij,pqi->pqj', W_chosen, batch_mul_drug_1))
-
-batch_mul_drug_2 = tf.einsum('bij,bjk->bik', drug_data_adj, drug_GCN_1)
-drug_GCN_2 = tf.nn.relu(tf.einsum('abij,abi->abj', W_chosen, batch_mul_drug_2))
-
-batch_mul_drug_3 = tf.einsum('bij,bjk->bik', drug_data_adj, drug_GCN_2 )
-drug_GCN_3 = tf.nn.relu(tf.einsum('abij,abi->abj', W_chosen, batch_mul_drug_3))
-
-
-
-W_drug = tflearn.variables.variable(name="Attn_W_drug",shape=[GRU_size_drug,GRU_size_drug],initializer=tf.random_normal([GRU_size_drug,GRU_size_drug],stddev=0.1),restore=False)
-b_drug = tflearn.variables.variable(name="Attn_b_drug",shape=[GRU_size_drug],initializer=tf.random_normal([GRU_size_drug],stddev=0.1),restore=False)
-U_drug = tflearn.variables.variable(name="Attn_U_drug",shape=[GRU_size_drug],initializer=tf.random_normal([GRU_size_drug],stddev=0.1),restore=False)
-V_drug = tf.tanh(tf.tensordot(drug_GCN_3,W_drug,axes=[[2],[0]])+b_drug)
-VU_drug = tf.tensordot(V_drug,U_drug,axes=[[2],[0]])
-alphas_drug = tf.nn.softmax(VU_drug,name='alphas')
-Attn_drug = tf.reduce_sum(drug_GCN_3 *tf.expand_dims(alphas_drug,-1),1)
-drug_reshape_6 = tflearn.reshape(Attn_drug, [-1, GRU_size_drug])
-
-
-
-
-merging =  merge([prot_reshape_6,drug_reshape_6],mode='concat',axis=1)
-fc_1 = fully_connected(merging, 600, activation='leakyrelu',weights_init="xavier",name='fully1')
+fc_1 = fully_connected(pool_2, 600, activation='leakyrelu',weights_init="xavier",name='fully1')
 drop_2 = dropout(fc_1, 0.8)
 fc_2 = fully_connected(drop_2, 300, activation='leakyrelu',weights_init="xavier",name='fully2')
 drop_3 = dropout(fc_2, 0.8)
@@ -435,7 +431,6 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
 # Training
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
 
-model.load('checkpoints-370700')
 ######### Setting weights
 
 model.set_weights(prot_gru_1_gate_matrix[0],prot_gru_1_gates_kernel_init)
@@ -448,9 +443,20 @@ model.set_weights(prot_gru_2_candidate_matrix[0],prot_gru_2_candidate_kernel_ini
 model.set_weights(prot_gru_2_candidate_bias[0],prot_gru_2_candidate_bias_init)
 
 
+model.set_weights(drug_gru_1_gate_matrix[0],drug_gru_1_gates_kernel_init)
+model.set_weights(drug_gru_1_gate_bias[0],drug_gru_1_gates_bias_init)
+model.set_weights(drug_gru_1_candidate_matrix[0],drug_gru_1_candidate_kernel_init)
+model.set_weights(drug_gru_1_candidate_bias[0],drug_gru_1_candidate_bias_init)
+model.set_weights(drug_gru_2_gate_matrix[0],drug_gru_2_gates_kernel_init)
+model.set_weights(drug_gru_2_gate_bias[0],drug_gru_2_gates_bias_init)
+model.set_weights(drug_gru_2_candidate_matrix[0],drug_gru_2_candidate_kernel_init)
+model.set_weights(drug_gru_2_candidate_bias[0],drug_gru_2_candidate_bias_init)
+
+#model.load('checkpoints-1452500')
+
 ######## training
-model.fit([protein_train,compound_train_ver,compound_train_adj], {'target': IC50_train}, n_epoch=100,batch_size=64,
-           validation_set=([protein_dev,compound_dev_ver,compound_dev_adj], {'target': IC50_dev}),
+model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,batch_size=64,
+           validation_set=([protein_dev,compound_dev], {'target': IC50_dev}),
            snapshot_epoch=True, show_metric=True, run_id='joint_model')
 
 # saving save
@@ -463,12 +469,12 @@ print(length_dev)
 num_bins = math.ceil(length_dev/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([protein_dev[0:size],compound_dev_ver[0:size],compound_dev_adj[0:size]])
+          y_pred = model.predict([protein_dev[0:size],compound_dev[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([protein_dev[(i*size):((i+1)*size)],compound_dev_ver[(i*size):((i+1)*size)],compound_dev_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([protein_dev[(i*size):((i+1)*size)],compound_dev[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([protein_dev[(i*size):length_dev],compound_dev_ver[(i*size):length_dev],compound_dev_adj[(i*size):length_dev]])
+          temp = model.predict([protein_dev[(i*size):length_dev],compound_dev[(i*size):length_dev]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
 
 er=0
@@ -488,12 +494,12 @@ print(length_ER)
 num_bins = math.ceil(length_ER/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([ER_protein[0:size],ER_compound_ver[0:size],ER_compound_adj[0:size]])
+          y_pred = model.predict([ER_protein[0:size],ER_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([ER_protein[(i*size):((i+1)*size)],ER_compound_ver[(i*size):((i+1)*size)],ER_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([ER_protein[(i*size):((i+1)*size)],ER_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([ER_protein[length_ER-size:length_ER],ER_compound_ver[length_ER-size:length_ER],ER_compound_adj[length_ER-size:length_ER]])
+          temp = model.predict([ER_protein[length_ER-size:length_ER],ER_compound[length_ER-size:length_ER]])
           y_pred = np.concatenate((y_pred,temp[size-length_ER+(i*size):size]), axis=0)
 
 er=0
@@ -513,12 +519,12 @@ print(length_GPCR)
 num_bins = math.ceil(length_GPCR/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([GPCR_protein[0:size],GPCR_compound_ver[0:size],GPCR_compound_adj[0:size]])
+          y_pred = model.predict([GPCR_protein[0:size],GPCR_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([GPCR_protein[(i*size):((i+1)*size)],GPCR_compound_ver[(i*size):((i+1)*size)],GPCR_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([GPCR_protein[(i*size):((i+1)*size)],GPCR_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([GPCR_protein[length_GPCR-size:length_GPCR],GPCR_compound_ver[length_GPCR-size:length_GPCR],GPCR_compound_adj[length_GPCR-size:length_GPCR]])
+          temp = model.predict([GPCR_protein[length_GPCR-size:length_GPCR],GPCR_compound[length_GPCR-size:length_GPCR]])
           y_pred = np.concatenate((y_pred,temp[size-length_GPCR+(i*size):size]), axis=0)
 
 er=0
@@ -539,12 +545,12 @@ print(length_kinase)
 num_bins = math.ceil(length_kinase/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([kinase_protein[0:size],kinase_compound_ver[0:size],kinase_compound_adj[0:size]])
+          y_pred = model.predict([kinase_protein[0:size],kinase_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([kinase_protein[(i*size):((i+1)*size)],kinase_compound_ver[(i*size):((i+1)*size)],kinase_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([kinase_protein[(i*size):((i+1)*size)],kinase_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([kinase_protein[length_kinase-size:length_kinase],kinase_compound_ver[length_kinase-size:length_kinase],kinase_compound_adj[length_kinase-size:length_kinase]])
+          temp = model.predict([kinase_protein[length_kinase-size:length_kinase],kinase_compound[length_kinase-size:length_kinase]])
           y_pred = np.concatenate((y_pred,temp[size-length_kinase+(i*size):size]), axis=0)
 
 er=0
@@ -557,7 +563,6 @@ print(mse)
 results = sm.OLS(y_pred,sm.add_constant(kinase_IC50)).fit()
 print(results.summary())
 
-
 print("error on channel")
 size = 64
 length_channel = len(channel_protein)
@@ -565,12 +570,12 @@ print(length_channel)
 num_bins = math.ceil(length_channel/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([channel_protein[0:size],channel_compound_ver[0:size],channel_compound_adj[0:size]])
+          y_pred = model.predict([channel_protein[0:size],channel_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([channel_protein[(i*size):((i+1)*size)],channel_compound_ver[(i*size):((i+1)*size)],channel_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([channel_protein[(i*size):((i+1)*size)],channel_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([channel_protein[length_channel-size:length_channel],channel_compound_ver[length_channel-size:length_channel],channel_compound_adj[length_channel-size:length_channel]])
+          temp = model.predict([channel_protein[length_channel-size:length_channel],channel_compound[length_channel-size:length_channel]])
           y_pred = np.concatenate((y_pred,temp[size-length_channel+(i*size):size]), axis=0)
 
 er=0
@@ -584,6 +589,7 @@ results = sm.OLS(y_pred,sm.add_constant(channel_IC50)).fit()
 print(results.summary())
 
 
+
 print("error on train")
 size = 64
 length_train = len(train_protein)
@@ -591,12 +597,12 @@ print(length_train)
 num_bins = math.ceil(length_train/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([train_protein[0:size],train_compound_ver[0:size],train_compound_adj[0:size]])
+          y_pred = model.predict([train_protein[0:size],train_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([train_protein[(i*size):((i+1)*size)],train_compound_ver[(i*size):((i+1)*size)],train_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([train_protein[(i*size):((i+1)*size)],train_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([train_protein[length_train-size:length_train],train_compound_ver[length_train-size:length_train],train_compound_adj[length_train-size:length_train]])
+          temp = model.predict([train_protein[length_train-size:length_train],train_compound[length_train-size:length_train]])
           y_pred = np.concatenate((y_pred,temp[size-length_train+(i*size):size]), axis=0)
 
 er=0
@@ -617,12 +623,12 @@ print(length_test)
 num_bins = math.ceil(length_test/size)
 for i in range(num_bins):
         if i==0:
-          y_pred = model.predict([test_protein[0:size],test_compound_ver[0:size],test_compound_adj[0:size]])
+          y_pred = model.predict([test_protein[0:size],test_compound[0:size]])
         elif i < num_bins-1:
-          temp = model.predict([test_protein[(i*size):((i+1)*size)],test_compound_ver[(i*size):((i+1)*size)],test_compound_adj[(i*size):((i+1)*size)]])
+          temp = model.predict([test_protein[(i*size):((i+1)*size)],test_compound[(i*size):((i+1)*size)]])
           y_pred = np.concatenate((y_pred,temp), axis=0)
         else:
-          temp = model.predict([test_protein[length_test-size:length_test],test_compound_ver[length_test-size:length_test],test_compound_adj[length_test-size:length_test]])
+          temp = model.predict([test_protein[length_test-size:length_test],test_compound[length_test-size:length_test]])
           y_pred = np.concatenate((y_pred,temp[size-length_test+(i*size):size]), axis=0)
 
 er=0

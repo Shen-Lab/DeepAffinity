@@ -299,9 +299,9 @@ test_protein = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_
 test_compound = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 test_IC50 = read_labels("./data/test_ic50")
 
-#train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
-#train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
-#train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
+train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
+train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
+train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
 
 ## separating train,dev, test data
 compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev = train_dev_split(train_protein,train_compound,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size)
@@ -309,16 +309,16 @@ compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev =
 ## RNN for protein
 prot_data = input_data(shape=[None, protein_MAX_size])
 prot_embd = tflearn.embedding(prot_data, input_dim=vocab_size_protein, output_dim=GRU_size_prot)
-prot_gru_1 = tflearn.gru(prot_embd, GRU_size_prot,initial_state= prot_init_state_1,trainable=False,return_seq=True)
+prot_gru_1 = tflearn.gru(prot_embd, GRU_size_prot,initial_state= prot_init_state_1,trainable=True,return_seq=True,restore=False)
 prot_gru_1 = tf.stack(prot_gru_1,axis=1)
-prot_gru_2 = tflearn.gru(prot_gru_1, GRU_size_prot,initial_state= prot_init_state_2,trainable=False,return_seq=True)
+prot_gru_2 = tflearn.gru(prot_gru_1, GRU_size_prot,initial_state= prot_init_state_2,trainable=True,return_seq=True,restore=False)
 prot_gru_2=tf.stack(prot_gru_2,axis=1)
 
 drug_data = input_data(shape=[None, comp_MAX_size])
 drug_embd = tflearn.embedding(drug_data, input_dim=vocab_size_compound, output_dim=GRU_size_drug)
-drug_gru_1 = tflearn.gru(drug_embd,GRU_size_drug,initial_state= drug_init_state_1,trainable=False,return_seq=True)
+drug_gru_1 = tflearn.gru(drug_embd,GRU_size_drug,initial_state= drug_init_state_1,trainable=True,return_seq=True,restore=False)
 drug_gru_1 = tf.stack(drug_gru_1,1)
-drug_gru_2 = tflearn.gru(drug_gru_1, GRU_size_drug,initial_state= drug_init_state_2,trainable=False,return_seq=True)
+drug_gru_2 = tflearn.gru(drug_gru_1, GRU_size_drug,initial_state= drug_init_state_2,trainable=True,return_seq=True,restore=False)
 drug_gru_2 = tf.stack(drug_gru_2,axis=1)
 
 
@@ -425,16 +425,14 @@ drop_2 = dropout(fc_1, 0.8)
 fc_2 = fully_connected(drop_2, 300, activation='leakyrelu',weights_init="xavier",name='fully2')
 drop_3 = dropout(fc_2, 0.8)
 linear = fully_connected(drop_3, 1, activation='linear',name='fully3')
-reg = regression(linear, optimizer='adam', learning_rate=0.001,
+reg = regression(linear, optimizer='adam', learning_rate=0.0001,
                      loss='mean_square', name='target')
 
 # Training
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
 
-
 ######### Setting weights
 
-model.set_weights(prot_embd_W[0],prot_embd_init) 
 model.set_weights(prot_gru_1_gate_matrix[0],prot_gru_1_gates_kernel_init)
 model.set_weights(prot_gru_1_gate_bias[0],prot_gru_1_gates_bias_init)
 model.set_weights(prot_gru_1_candidate_matrix[0],prot_gru_1_candidate_kernel_init)
@@ -445,7 +443,6 @@ model.set_weights(prot_gru_2_candidate_matrix[0],prot_gru_2_candidate_kernel_ini
 model.set_weights(prot_gru_2_candidate_bias[0],prot_gru_2_candidate_bias_init)
 
 
-model.set_weights(drug_embd_W[0],drug_embd_init)
 model.set_weights(drug_gru_1_gate_matrix[0],drug_gru_1_gates_kernel_init)
 model.set_weights(drug_gru_1_gate_bias[0],drug_gru_1_gates_bias_init)
 model.set_weights(drug_gru_1_candidate_matrix[0],drug_gru_1_candidate_kernel_init)
@@ -455,6 +452,7 @@ model.set_weights(drug_gru_2_gate_bias[0],drug_gru_2_gates_bias_init)
 model.set_weights(drug_gru_2_candidate_matrix[0],drug_gru_2_candidate_kernel_init)
 model.set_weights(drug_gru_2_candidate_bias[0],drug_gru_2_candidate_bias_init)
 
+#model.load('checkpoints-1452500')
 
 ######## training
 model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,batch_size=64,
