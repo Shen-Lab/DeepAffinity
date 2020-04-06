@@ -25,6 +25,12 @@ from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 #from recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
 random.seed(1234)
+
+
+if len(sys.argv) == 2:
+    label_type = sys.argv[1].lower()
+else:
+    label_type = 'ic50'
 #### data and vocabulary
 
 data_dir="./data"
@@ -276,32 +282,32 @@ drug_init_state_2 = tf.convert_to_tensor(np.reshape(drug_init_state_2,[batch_siz
 
 ER_protein = prepare_data(data_dir,"./data/ER_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 ER_compound = prepare_data(data_dir,"./data/ER_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-ER_IC50 = read_labels("./data/ER_ic50")
+ER_IC50 = read_labels("./data/ER_" + label_type)
 
 GPCR_protein = prepare_data(data_dir,"./data/GPCR_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 GPCR_compound = prepare_data(data_dir,"./data/GPCR_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-GPCR_IC50 = read_labels("./data/GPCR_ic50")
+GPCR_IC50 = read_labels("./data/GPCR_" + label_type)
 
 kinase_protein = prepare_data(data_dir,"./data/kinase_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 kinase_compound = prepare_data(data_dir,"./data/kinase_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-kinase_IC50 = read_labels("./data/kinase_ic50")
+kinase_IC50 = read_labels("./data/kinase_" + label_type)
 
 channel_protein = prepare_data(data_dir,"./data/channel_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 channel_compound = prepare_data(data_dir,"./data/channel_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-channel_IC50 = read_labels("./data/channel_ic50")
+channel_IC50 = read_labels("./data/channel_" + label_type)
 
 
 train_protein = prepare_data(data_dir,"./data/train_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 train_compound = prepare_data(data_dir,"./data/train_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-train_IC50 = read_labels("./data/train_ic50")
+train_IC50 = read_labels("./data/train_" + label_type)
 
 test_protein = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 test_compound = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-test_IC50 = read_labels("./data/test_ic50")
+test_IC50 = read_labels("./data/test_" + label_type)
 
-train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
-train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
-train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
+#train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
+#train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
+#train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
 
 ## separating train,dev, test data
 compound_train, compound_dev, IC50_train, IC50_dev, protein_train, protein_dev = train_dev_split(train_protein,train_compound,train_IC50,dev_perc,comp_MAX_size,protein_MAX_size,batch_size)

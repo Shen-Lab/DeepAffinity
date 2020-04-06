@@ -26,9 +26,12 @@ from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 
 random.seed(1234)
 #### data and vocabulary
-
+label_type = 'ic50'
 if len(sys.argv) == 2:
     checkpoint_file = sys.argv[1]
+elif len(sys.argv) == 3:
+    checkpoint_file = sys.argv[1]
+    label_type = sys.argv[2].lower()
 else:
     checkpoint_file = 'checkpoints-741400'
 
@@ -218,7 +221,7 @@ drug_init_state_2 = tf.convert_to_tensor(np.reshape(drug_init_state_2,[batch_siz
 
 test_protein,test_protein_length = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_protein,protein_MAX_size,1)
 test_compound,test_compound_length = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
-test_IC50 = read_labels("./data/test_ic50")
+test_IC50 = read_labels("./data/test_" + label_type)
 
 
 ## RNN for protein
