@@ -3,17 +3,18 @@
 
 show_help() {
 cat << EOF
-Usage: ${0##*/} [-h] [-p|--prot PROTEIN_FILE] [-c|--comp COMPOUND_FILE] [-l|--label LABEL_FILE] [-o|--output OUTPUT_FILE_NAME] [-l|--label LABEL_FILE] [-t|--labeltype LABEL_TYPE]
+Usage: ${0##*/} [-h] [-p|--prot PROTEIN_FILE] [-c|--comp COMPOUND_FILE] [-l|--label LABEL_FILE] [-o|--output OUTPUT_FILE_NAME] [-l|--label LABEL_FILE] [-t|--labeltype LABEL_TYPE] [-m|--checkpoint CHECKPOINT_FILE]
 
 Run the DeepAffinity with given data or run our code with default IC50 dataset.
 
-    no argument                    run with default IC50 dataset
-    -h                             display this help and exit
-    -o|--output OUTPUT_FILE_NAME   specify output filename
-    -p|--prot PROTEIN_SPS_FILE     replace test_sps with user's protein sps format file
-    -c|--comp COMPOUND_SMILE_FILE  replace test_smile with user's compound SIMLE format file
-    -l|--label LABEL_FILE          replace test_ic50 with user's label file
-    -t|--labeltype LABEL_TYPE      specify the label type you are using, it can be either IC50(default), EC50, Ki or Kd
+    no argument                     run with default IC50 dataset
+    -h                              display this help and exit
+    -o|--output OUTPUT_FILE_NAME    specify output filename
+    -p|--prot PROTEIN_SPS_FILE      replace test_sps with user's protein sps format file
+    -c|--comp COMPOUND_SMILE_FILE   replace test_smile with user's compound SIMLE format file
+    -l|--label LABEL_FILE           replace test_ic50 with user's label file
+    -t|--labeltype LABEL_TYPE       specify the label type you are using, it can be either IC50(default), EC50, Ki or Kd
+    -m|--checkpoint CHECKPOINT_FILE test your data by checkpoint
 
 EOF
 }
