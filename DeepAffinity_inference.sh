@@ -12,7 +12,7 @@ Run the DeepAffinity with given data or run our code with default IC50 dataset.
     -o|--output OUTPUT_FILE_NAME   specify output filename
     -p|--prot PROTEIN_SPS_FILE     replace test_sps with user's protein sps format file
     -c|--comp COMPOUND_SMILE_FILE  replace test_smile with user's compound SIMLE format file
-    -l|--label LABEL_FILE          replace test_ic50 with user's label IC50 file\
+    -l|--label LABEL_FILE          replace test_ic50 with user's label IC50 file
     -t|--labeltype LABEL_TYPE      specify the label type you are using, it can be either IC50(default), EC50, Ki or Kd
 
 EOF
