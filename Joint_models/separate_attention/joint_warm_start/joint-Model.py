@@ -299,8 +299,8 @@ test_protein = prepare_data(data_dir,"./data/test_sps",vocab_size_protein,vocab_
 test_compound = prepare_data(data_dir,"./data/test_smile",vocab_size_compound,vocab_compound,comp_MAX_size,0)
 test_IC50 = read_labels("./data/test_ic50")
 
-train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
-train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
+#train_protein += test_protein + ER_protein + GPCR_protein + kinase_protein + channel_protein
+#train_compound += test_compound + ER_compound + GPCR_compound + kinase_compound + channel_compound
 train_IC50 += test_IC50 + ER_IC50 + GPCR_IC50 + kinase_IC50 + channel_IC50
 
 ## separating train,dev, test data
@@ -313,50 +313,18 @@ prot_gru_1 = tflearn.gru(prot_embd, GRU_size_prot,initial_state= prot_init_state
 prot_gru_1 = tf.stack(prot_gru_1,axis=1)
 prot_gru_2 = tflearn.gru(prot_gru_1, GRU_size_prot,initial_state= prot_init_state_2,trainable=True,return_seq=True,restore=False)
 prot_gru_2=tf.stack(prot_gru_2,axis=1)
+W_prot = tflearn.variables.variable(name="Attn_W_prot",shape=[GRU_size_prot,GRU_size_prot],initializer=tf.random_normal([GRU_size_prot,GRU_size_prot],stddev=0.1),restore=False)
+b_prot = tflearn.variables.variable(name="Attn_b_prot",shape=[GRU_size_prot],initializer=tf.random_normal([GRU_size_prot],stddev=0.1),restore=False)
+U_prot = tflearn.variables.variable(name="Attn_U_prot",shape=[GRU_size_prot],initializer=tf.random_normal([GRU_size_prot],stddev=0.1),restore=False)
+V_prot = tf.tanh(tf.tensordot(prot_gru_2,W_prot,axes=1)+b_prot)
+VU_prot = tf.tensordot(V_prot,U_prot,axes=1)
+alphas_prot = tf.nn.softmax(VU_prot,name='alphas')
+Attn_prot = tf.reduce_sum(prot_gru_2 *tf.expand_dims(alphas_prot,-1),1)
+Attn_prot_reshape = tflearn.reshape(Attn_prot, [-1, GRU_size_prot,1])
+conv_1 = conv_1d(Attn_prot_reshape, 64, 8,4, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv1')
 
-drug_data = input_data(shape=[None, comp_MAX_size])
-drug_embd = tflearn.embedding(drug_data, input_dim=vocab_size_compound, output_dim=GRU_size_drug)
-drug_gru_1 = tflearn.gru(drug_embd,GRU_size_drug,initial_state= drug_init_state_1,trainable=True,return_seq=True,restore=False)
-drug_gru_1 = tf.stack(drug_gru_1,1)
-drug_gru_2 = tflearn.gru(drug_gru_1, GRU_size_drug,initial_state= drug_init_state_2,trainable=True,return_seq=True,restore=False)
-drug_gru_2 = tf.stack(drug_gru_2,axis=1)
-
-
-W = tflearn.variables.variable(name="Attn_W_prot",shape=[GRU_size_prot,GRU_size_drug],initializer=tf.random_normal([GRU_size_prot,GRU_size_drug],stddev=0.1),restore=False)
-b = tflearn.variables.variable(name="Attn_b_prot",shape=[protein_MAX_size,comp_MAX_size],initializer=tf.random_normal([protein_MAX_size,comp_MAX_size],stddev=0.1),restore=False)
-V = tf.tensordot(prot_gru_2,W,axes=[[2],[0]])
-for i in range(batch_size):
-   temp = tf.expand_dims(tf.tanh(tf.tensordot(tflearn.reshape(tf.slice(V,[i,0,0],[1,protein_MAX_size,GRU_size_drug]),[protein_MAX_size,GRU_size_drug]),tflearn.reshape(tf.slice(drug_gru_2,[i,0,0],[1,comp_MAX_size,GRU_size_drug]),[comp_MAX_size,GRU_size_drug]),axes=[[1],[1]])+b),0)
-   if i==0:
-     VU = temp
-   else:
-     VU = merge([VU,temp],mode='concat',axis=0)
-
-VU = tflearn.reshape(VU,[-1,comp_MAX_size*protein_MAX_size])
-alphas_pair = tf.nn.softmax(VU,name='alphas')
-alphas_pair = tflearn.reshape(alphas_pair,[-1,protein_MAX_size,comp_MAX_size])
-
-U_size = 256
-U_prot = tflearn.variables.variable(name="Attn_U_prot",shape=[U_size,GRU_size_prot],initializer=tf.random_normal([U_size,GRU_size_prot],stddev=0.1),restore=False)
-U_drug = tflearn.variables.variable(name="Attn_U_drug",shape=[U_size,GRU_size_drug],initializer=tf.random_normal([U_size,GRU_size_drug],stddev=0.1),restore=False)
-B = tflearn.variables.variable(name="Attn_B",shape=[U_size],initializer=tf.random_normal([U_size],stddev=0.1),restore=False)
-
-prod_drug = tf.tensordot(drug_gru_2,U_drug,axes=[[2],[1]])
-prod_prot = tf.tensordot(prot_gru_2,U_prot,axes=[[2],[1]])
-
-Attn = tflearn.variables.variable(name="Attn",shape=[batch_size,U_size],initializer=tf.zeros([batch_size,U_size]),restore=False)
-for i in range(comp_MAX_size):
-        temp = tf.expand_dims(tflearn.reshape(tf.slice(prod_drug,[0,i,0],[batch_size,1,U_size]),[batch_size,U_size]),axis=1) + prod_prot + B
-        Attn = Attn + tf.reduce_sum(tf.multiply(tf.tile(tflearn.reshape(tf.slice(alphas_pair,[0,0,i],[batch_size,protein_MAX_size,1]),[batch_size,protein_MAX_size,1]),[1,1,U_size]),temp),axis=1)
-
-
-Attn_reshape = tflearn.reshape(Attn, [-1, U_size,1])
-conv_1 = conv_1d(Attn_reshape, 64, 4,2, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv1')
 pool_1 = max_pool_1d(conv_1, 4,name='pool1')
-#conv_2 = conv_1d(pool_1, 64, 4,2, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv2')
-#pool_2 = max_pool_1d(conv_2, 4,name='pool2')
-
-pool_2 = tflearn.reshape(pool_1, [-1, 64*32])
+prot_reshape_6 = tflearn.reshape(pool_1, [-1, 64*16])
 
 
 
@@ -390,6 +358,25 @@ for v in tf.global_variables():
       prot_embd_W.append(v)
 
 
+## RNN for drug
+drug_data = input_data(shape=[None, comp_MAX_size])
+drug_embd = tflearn.embedding(drug_data, input_dim=vocab_size_compound, output_dim=GRU_size_drug)
+drug_gru_1 = tflearn.gru(drug_embd,GRU_size_drug,initial_state= drug_init_state_1,trainable=True,return_seq=True,restore=False)
+drug_gru_1 = tf.stack(drug_gru_1,1)
+drug_gru_2 = tflearn.gru(drug_gru_1, GRU_size_drug,initial_state= drug_init_state_2,trainable=True,return_seq=True,restore=False)
+drug_gru_2=tf.stack(drug_gru_2,axis=1)
+W_drug = tflearn.variables.variable(name="Attn_W_drug",shape=[GRU_size_drug,GRU_size_drug],initializer=tf.random_normal([GRU_size_drug,GRU_size_drug],stddev=0.1),restore=False)
+b_drug = tflearn.variables.variable(name="Attn_b_drug",shape=[GRU_size_drug],initializer=tf.random_normal([GRU_size_drug],stddev=0.1),restore=False)
+U_drug = tflearn.variables.variable(name="Attn_U_drug",shape=[GRU_size_drug],initializer=tf.random_normal([GRU_size_drug],stddev=0.1),restore=False)
+V_drug = tf.tanh(tf.tensordot(drug_gru_2,W_drug,axes=1)+b_drug)
+VU_drug = tf.tensordot(V_drug,U_drug,axes=1)
+alphas_drug = tf.nn.softmax(VU_drug,name='alphas')
+Attn_drug = tf.reduce_sum(drug_gru_2 *tf.expand_dims(alphas_drug,-1),1)
+Attn_drug_reshape = tflearn.reshape(Attn_drug, [-1, GRU_size_drug,1])
+conv_3 = conv_1d(Attn_drug_reshape, 64, 4,2, activation='leakyrelu', weights_init="xavier",regularizer="L2",name='conv3')
+pool_3 = max_pool_1d(conv_3, 4,name='pool3')
+drug_reshape_6 = tflearn.reshape(pool_3, [-1, 64*16])
+
 drug_embd_W = []
 drug_gru_1_gate_matrix = []
 drug_gru_1_gate_bias = []
@@ -420,7 +407,8 @@ for v in tf.global_variables():
    elif "Embedding_1" in v.name:
       drug_embd_W.append(v)
 
-fc_1 = fully_connected(pool_2, 600, activation='leakyrelu',weights_init="xavier",name='fully1')
+merging =  merge([prot_reshape_6,drug_reshape_6],mode='concat',axis=1)
+fc_1 = fully_connected(merging, 600, activation='leakyrelu',weights_init="xavier",name='fully1')
 drop_2 = dropout(fc_1, 0.8)
 fc_2 = fully_connected(drop_2, 300, activation='leakyrelu',weights_init="xavier",name='fully2')
 drop_3 = dropout(fc_2, 0.8)
@@ -430,6 +418,8 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
 
 # Training
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
+
+#model.load('checkpoints-370700')
 
 ######### Setting weights
 
@@ -452,7 +442,6 @@ model.set_weights(drug_gru_2_gate_bias[0],drug_gru_2_gates_bias_init)
 model.set_weights(drug_gru_2_candidate_matrix[0],drug_gru_2_candidate_kernel_init)
 model.set_weights(drug_gru_2_candidate_bias[0],drug_gru_2_candidate_bias_init)
 
-#model.load('checkpoints-1452500')
 
 ######## training
 model.fit([protein_train,compound_train], {'target': IC50_train}, n_epoch=100,batch_size=64,

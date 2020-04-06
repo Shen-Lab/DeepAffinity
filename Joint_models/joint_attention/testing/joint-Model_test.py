@@ -27,6 +27,11 @@ from tflearn.layers.recurrent import bidirectional_rnn, BasicLSTMCell,GRUCell
 random.seed(1234)
 #### data and vocabulary
 
+if len(sys.argv) == 2:
+    checkpoint_file = sys.argv[1]
+else:
+    checkpoint_file = 'checkpoints-741400'
+
 data_dir="./data"
 vocab_size_compound=68
 vocab_size_protein=76
@@ -277,9 +282,10 @@ reg = regression(linear, optimizer='adam', learning_rate=0.0001,
                      loss='mean_square', name='target')
 
 model = tflearn.DNN(reg, tensorboard_verbose=0,tensorboard_dir='./mytensor/',checkpoint_path="./checkpoints/")
-checkpoints = 741400
+#checkpoints = 741400
 
-model.load('checkpoints-'+str(checkpoints))
+#model.load('checkpoints-'+str(checkpoints))
+model.load(checkpoint_file)
 print("error on test")
 size = 64
 length_test = len(test_protein)
