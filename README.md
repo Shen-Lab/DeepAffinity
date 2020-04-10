@@ -33,7 +33,7 @@ To test DeepAffinity for new dataset, please follow the steps below:
 * cd Joint_models/joint_attention/testing/
 * Run the Python code joint-Model-test.py
 
-You may use the [script](DeepAffinity_inference.sh) to run our model in one command. The details can be found in our [manual](DeepAffinity_Manual.pdf)(last updated: Apr. 7, 2020).
+You may use the [script](DeepAffinity_inference.sh) to run our model in one command. The details can be found in our [manual](DeepAffinity_Manual.pdf) (last updated: Apr. 9, 2020).
  
 
 ## Note:
