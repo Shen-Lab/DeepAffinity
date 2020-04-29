@@ -125,8 +125,12 @@ if ! [ $num1 -eq $num2 ]; then
 fi
 
 if [ -v checkpoint ]; then 
+    checkpoint_filename="$(basename -- $checkpoint)"
     model_path="./Joint_models/joint_attention/testing/"
     file_name="joint-Model_test.py"
+    if ! [ -f $model_path${checkpoint_filename}.meta ]; then
+        cp ${checkpoint}.* $model_path
+    fi
 else
     model_path="./Joint_models/joint_attention/joint_warm_start/"
     file_name="joint-Model.py"
@@ -135,11 +139,18 @@ echo "dealing with data"
 tar -xf ./data/dataset/${labeltype}.tar.xz
 cp $prot ./${labeltype}/SPS/test_sps
 cp $comp ./${labeltype}/SPS/test_smile
-cp $label ./${labeltype}/SPS/test_ic50
+if [ -v label ]; then
+    cp $label ./${labeltype}/SPS/test_ic50
+fi
 cp ./${labeltype}/SPS/* ${model_path}data/
 rm -r ./${labeltype}
+rm ${model_path}data/*.ids*
 echo "Running default DeepAffinity"
 cd ${model_path}
-python ${file_name} $checkpoint $labeltype|tee $output
-echo "Result has been saved to file ${model_path}${output}"
+if [ -v label ]; then
+    python ${file_name} $checkpoint_filename $labeltype|tee $output
+else
+    python joint-Model_predict.py $checkpoint_filename |tee $output
+fi
+echo "Output has been saved to file ${model_path}${output}"
 fi
