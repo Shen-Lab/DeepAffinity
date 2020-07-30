@@ -28,7 +28,7 @@ conda env create -n envname -f environment.yml
 To test DeepAffinity for new dataset, please follow the steps below:
 * Download the checkpoints trained based on training set of IC50 from the following [link](https://drive.google.com/drive/folders/1Pwn8uTyHNig4G2JDy0TErzH9hVacSadt?usp=sharing)
 * Download the checkpoints trained based on the whole dataset of IC50 from the following [link](https://drive.google.com/drive/folders/1XAnXHSRnrO8DGA1drW3YnmaBaCihdiP5?usp=sharing)
-* Copy the checkpoints to the folder "Joint_models/joint_attention/testing/"
+* Download the checkpoints trained based on the whole dataset of Kd from the following [link](https://drive.google.com/drive/folders/14TC_6nbZt-YOV2IwlFt9EiAh_VcJqyRN?usp=sharing)
 * Put your data in folder "Joint_models/joint_attention/testing/data"
 * cd Joint_models/joint_attention/testing/
 * Run the Python code joint-Model-test.py
