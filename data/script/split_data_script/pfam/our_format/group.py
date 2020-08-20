@@ -163,7 +163,15 @@ def smoothForSS(line):
                 len(lastTempStr) / 2):
                 lastTempStr = len(lastTempStr) * 'H'
             else:
-                lastTempStr = len(lastTempStr) * finStr[-1]
+                if len(finStr) != 0:
+                    lastTempStr = len(lastTempStr) * finStr[-1]
+                else:
+                    lastTempStr = line.strip()
+                    print(line)
+                    #continue
+                    #maxCount = lastTempStr.count('C')
+                    #maxChar = 'C'
+                    #if lastTempStr.count('E')
             finStr += lastTempStr
     return finStr
 
