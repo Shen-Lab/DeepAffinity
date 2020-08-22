@@ -36,7 +36,9 @@ To test DeepAffinity for new dataset, please follow the steps below:
 
 You may use the [script](DeepAffinity_inference.sh) to run our model in one command. The details can be found in our [manual](DeepAffinity_Manual.pdf) (last updated: Apr. 9, 2020).
 
-(Aug. 21, 2020) We are now providing SPS (Structure Property-annotated Sequence) for all human proteins! [zip](https://github.com/Shen-Lab/DeepAffinity/blob/master/data/dataset/uniprot.human.scratch_outputs.w_sps.tab_corrected.zip)  (Credit: Dr. Tomas Babak at Queens University).  Columns: 1. Gene identifier 2. Protein FASTA  3. SS (Scratch)  4. SS8 (Scratch)  5. acc (Scratch)  6. acc20  7. SPS    P.S. Considering the distribution of protein sequence lengths in our training data, our trained checkpoints are recommended for proteins of lengths between tens and 1500.  
+(Aug. 21, 2020) We are now providing SPS (Structure Property-annotated Sequence) for all human proteins! [zip](https://github.com/Shen-Lab/DeepAffinity/blob/master/data/dataset/uniprot.human.scratch_outputs.w_sps.tab_corrected.zip)  (Credit: Dr. Tomas Babak at Queens University).  Columns: 1. Gene identifier 2. Protein FASTA  3. SS (Scratch)  4. SS8 (Scratch)  5. acc (Scratch)  6. acc20  7. SPS    
+
+P.S. Considering the distribution of protein sequence lengths in our training data, our trained checkpoints are recommended for proteins of lengths between tens and 1500.  
  
 
 ## Note:
