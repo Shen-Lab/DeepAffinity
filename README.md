@@ -54,6 +54,9 @@ To re-train the seq2seq models for new dataset, please follow the steps below:
 	* num_train_step: number of training steps (default 100K)
 	* size: the size of hidden dimension for RNN models (default 256)
 	* SPS_max_length (SMILE_max_length): maximum length of SPS (SMILE)
+* Suggestion for using seq2seq models:
+	* For protein encoding: seq2seq_part_FASTA_attention_fw_bw
+	* For compound encoding: seq2seq_part_SMILE_attention_fw_bw
 * Example of running for proteins:
 python translate.py --data_dir ./data --train_dir ./checkpoints --from_train_data ./data/FASTA_from.txt --to_train_data ./data/FASTA_to.txt --from_dev_data ./data/FASTA_from_dev.txt --to_dev_data ./data/FASTA_to_dev.txt --SPS_max_length 152
 * Once the training is done, you should copy the parameters' weights cell_*.txt, embedding_W.txt, *_layer_states.txt in the joint_attention/joint_fixed_RNN/data/prot_init which will be used for the next step, supervised training in the joint attention model (you can do the same for separate and marginalized attention models as well)  
