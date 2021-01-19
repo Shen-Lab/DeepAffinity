@@ -40,6 +40,24 @@ You may use the [script](DeepAffinity_inference.sh) to run our model in one comm
 
 P.S. Considering the distribution of protein sequence lengths in our training data, our trained checkpoints are recommended for proteins of lengths between tens and 1500.  
  
+## Re-training the seq2seq models for new dataset:
+To re-train the seq2seq models for new dataset, please follow the steps below:
+* Use the translate.py function in any of the seq2seq models with the following important arguments:
+	* data_dir: data directory where includes all the data
+	* train_dir: training directory where all the checkpoints will be saved in.
+	* from_train_data: source training data which will be translated from.
+	* to_train_data: target training data which will be translated to (can be the same with from_train_data if doing auto-encoding which we used in the paper).
+	* from_dev_data: source validation data which will be translated from.
+	* to_dev_data: target validation data which will be translated to (can be the same with from_dec_data if doing auto-encoding which we used in the paper).
+	* num_layers: Number of RNN layers (default 2)
+	* batch_size: Batch size (default 256)
+	* num_train_step: number of training steps (default 100K)
+	* size: the size of hidden dimension for RNN models (default 256)
+	* SPS_max_length (SMILE_max_length): maximum length of SPS (SMILE)
+* Example of running for proteins:
+python translate.py --data_dir ./data --train_dir ./checkpoints --from_train_data ./data/FASTA_from.txt --to_train_data ./data/FASTA_to.txt --from_dev_data ./data/FASTA_from_dev.txt --to_dev_data ./data/FASTA_to_dev.txt --SPS_max_length 152
+* Once the training is done, you should copy the parameters' weights cell_*.txt, embedding_W.txt, *_layer_states.txt in the joint_attention/joint_fixed_RNN/data/prot_init which will be used for the next step, supervised training in the joint attention model (you can do the same for separate and marginalized attention models as well)  
+ 
 
 ## Note:
 We recommend referring to PubChem for canonical SMILES for compounds. 
