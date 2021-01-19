@@ -75,13 +75,17 @@ tf.app.flags.DEFINE_boolean("self_test", False,
 tf.app.flags.DEFINE_boolean("use_fp16", False,
                             "Train using fp16 instead of fp32.")
 
+tf.app.flags.DEFINE_integer("SMILE_max_length", 100,
+                            "Maximum length of SMILE.")
+
 FLAGS = tf.app.flags.FLAGS
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
 #_buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
 #_buckets = [(20,20),(40,40),(60,60),(80,80),(100,100)]
-_buckets = [(100,100)]
+_buckets = [(FLAGS.SMILE_max_length,FLAGS.SMILE_max_length)]
+
 
 def read_data(source_path, target_path, max_size=None):
   """Read data from source and target files and put into buckets.
