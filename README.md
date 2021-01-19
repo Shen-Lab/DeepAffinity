@@ -41,6 +41,7 @@ You may use the [script](DeepAffinity_inference.sh) to run our model in one comm
 P.S. Considering the distribution of protein sequence lengths in our training data, our trained checkpoints are recommended for proteins of lengths between tens and 1500.  
  
 ## Re-training the seq2seq models for new dataset:
+(Added on Jan. 18, 2021)
 To re-train the seq2seq models for new dataset, please follow the steps below:
 * Use the translate.py function in any of the seq2seq models with the following important arguments:
 	* data_dir: data directory where includes all the data
