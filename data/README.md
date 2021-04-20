@@ -22,6 +22,7 @@ In "SPS" folder, there are 3 files for each class:
 	https://drive.google.com/open?id=1_msEbSh_YZr0NLSR_DJ_xWE9FlqBlMV9
 
 You will get several files:
+
 	1) *_protein_compound_pair.tsv
 	* represents the measure method for protein compound pairs. It can be IC50, EC50, Ki and Kd. In this file, it contains DeepAffinity protein ID (4 digits random number and Uppercase letters), protein Uniprot ID, DeepAffinity compound ID (4 digits random number and Lowercase letters), compound CID and measure value. DeepAffinity ID can be used to retrieve corresponding representation format. Those measure value is calculated by -log10(M) and the detail can be found in the supplement of our paper.
 	
