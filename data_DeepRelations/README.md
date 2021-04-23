@@ -14,7 +14,7 @@
     * *_sps: protein sequences in SPS format from [DeepAffinity](https://github.com/Shen-Lab/DeepAffinity) (You don't need it for DeepRelations and most of DeepAffinity+ models)
     * *_uid: Uniprot ID of protein sequences
     
- * Also included are those data for 
+ Also included are those data for 
    * 5 case studies for affinity and contact prediction (merged_data/case_study)
    * 2 case studies for the study of structure-activity relationship (sar.tar.gz)
     
