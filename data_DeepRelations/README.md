@@ -1,7 +1,7 @@
 # Data and scripts
 
 ## Table of contents:
-* **data.tar.gz**: Contain the supervised learning datasets including:
+* **data.tar.gz**: Please download from https://drive.google.com/file/d/1_ZHPGkE_iqt3B-UskuBI8XsMhQqVgNMW/view?usp=sharing. It contains the supervised learning datasets including:
   * Contact map matrix
   * Protein-compound interaction matrix
   * JNLP scripts for downloading PDB files
