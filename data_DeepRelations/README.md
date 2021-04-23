@@ -1,5 +1,7 @@
 # Data and data-curation scripts for ["Explainable Deep Relational Networks for Predicting Compound--Protein Affinities and Contacts" (Karimi, Wu, Wang and Shen, JCIM 2020)](https://pubs.acs.org/doi/abs/10.1021/acs.jcim.0c00866)
 
+Data for explainabe prediction of compound-protein affinities: 4446 pairs between 3672 compounds and 1287 proteins, labeled with both inter-molecular affinity (pKd/pKi) and residue-atom contacts/interactions.  
+
 ## Table of contents:
 * **data.tar.gz**: Please download from https://drive.google.com/file/d/1_ZHPGkE_iqt3B-UskuBI8XsMhQqVgNMW/view?usp=sharing. It contains the supervised learning datasets including:
   * Intra-protein residue-residue contact map matrices (sequence-predicted, used for regularizing joint attentions)
