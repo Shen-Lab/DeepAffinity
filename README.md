@@ -23,6 +23,7 @@ conda env create -n envname -f environment.yml
 	* Marginalized attention mechanism
 	* Joint attention mechanism
 	* Graph convolution neural network (GCNN) with separate attention mechanism
+* (Update: Apr. 22, 2021) **data_DeepRelations**: A newly curated dataset for explainabe prediction of compound-protein affinities, containing 4446 pairs between 3672 compounds and 1287 proteins, labeled with both inter-molecular affinity (pKd/pKi) and residue-atom contacts/interactions.
 
 ## Testing the model
 To test DeepAffinity for new dataset, please follow the steps below:
