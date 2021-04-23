@@ -1,4 +1,4 @@
-# Data and scripts
+# Data and data-curation scripts for ["Explainable Deep Relational Networks for Predicting Compound--Protein Affinities and Contacts" (Karimi, Wu, Wang and Shen, JCIM 2021)](https://pubs.acs.org/doi/abs/10.1021/acs.jcim.0c00866)
 
 ## Table of contents:
 * **data.tar.gz**: Please download from https://drive.google.com/file/d/1_ZHPGkE_iqt3B-UskuBI8XsMhQqVgNMW/view?usp=sharing. It contains the supervised learning datasets including:
@@ -14,7 +14,7 @@
     * *_sps: protein sequences in SPS format from [DeepAffinity](https://github.com/Shen-Lab/DeepAffinity) (You don't need it for DeepRelations and most of DeepAffinity+ models)
     * *_uid: Uniprot ID of protein sequences
     
- Also included are those data for 
+* Also included in **data.tar.gz** are those data for 
    * 5 case studies for affinity and contact prediction (merged_data/case_study)
    * 2 case studies for the study of structure-activity relationship (sar.tar.gz)
     
