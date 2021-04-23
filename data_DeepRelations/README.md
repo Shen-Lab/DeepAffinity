@@ -14,6 +14,10 @@
     * *_sps: protein sequences in SPS format from [DeepAffinity](https://github.com/Shen-Lab/DeepAffinity) (You don't need it for DeepRelations and most of DeepAffinity+ models)
     * *_uid: Uniprot ID of protein sequences
     
+ * Also included are those data for 
+   * 5 case studies for affinity and contact prediction (merged_data/case_study)
+   * 2 case studies for the study of structure-activity relationship (sar.tar.gz)
+    
 * **scripts for data curation**: Contain scripts for generating intra-protein residue-residue contact matrix from sequence-predicted contact map files and protein-compound residue-atom interaction matrix (intermolecular contacts) from interaction data.  The intra-protein contact maps are used for reguarizing our model during training and not needed during inference.  The inter-molecular contacts are used, together with affinity values, as labels in training.  
 
 ## Usage of data curation scripts
