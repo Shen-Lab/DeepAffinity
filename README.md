@@ -37,7 +37,7 @@ To test DeepAffinity for new dataset, please follow the steps below:
 
 You may use the [script](DeepAffinity_inference.sh) to run our model in one command. The details can be found in our [manual](DeepAffinity_Manual.pdf) (last updated: Apr. 9, 2020). 
 
-(Apr. 27, 2021) If the number of testing pairs in the input is below 64 (batch size), the script returns an error (InvalidArgumentError ... ConCat0p : Dimensions of inputs should match: ...).  Such rigidity is unfrtuntely due to TFLEARN.  An easy get around is to "pad" the input file to reach at least 64 pairs, using arbitrary compound-protein inputs. 
+(Apr. 27, 2021) If the number of testing pairs in the input is below 64 (batch size), the script returns an error (InvalidArgumentError ... ConCat0p : Dimensions of inputs should match: ...).  Such rigidity is unfortunately due to TFLEARN.  An easy get around is to "pad" the input file to reach at least 64 pairs, using arbitrary compound-protein inputs. 
 
 (Aug. 21, 2020) We are now providing SPS (Structure Property-annotated Sequence) for all human proteins! [zip](https://github.com/Shen-Lab/DeepAffinity/blob/master/data/dataset/uniprot.human.scratch_outputs.w_sps.tab_corrected.zip)  (Credit: Dr. Tomas Babak at Queens University).  Columns: 1. Gene identifier 2. Protein FASTA  3. SS (Scratch)  4. SS8 (Scratch)  5. acc (Scratch)  6. acc20  7. SPS    
 
