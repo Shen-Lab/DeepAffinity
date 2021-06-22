@@ -1,6 +1,17 @@
-# DeepAffinity
+# DeepAffinity: Intro
 Drug discovery demands rapid quantification of compound-protein interaction  (CPI). However, there is a lack of methods that can predict compound-protein affinity from sequences alone with high applicability, accuracy, and interpretability. We present a integration of domain knowledges and learning-based approaches. Under novel representations of structurally-annotated protein sequences, a semi-supervised deep learning model that unifies recurrent and convolutional neural networks has been proposed to exploit both unlabeled and labeled data, for jointly encoding molecular representations and predicting affinities. Performances for new protein classes with few labeled data are further improved by transfer learning. Furthermore, novel attention mechanisms are developed and embedded to our model to add to its interpretability. Lastly, alternative representations using protein sequences or compound graphs and a unified RNN/GCNN-CNN model using graph CNN (GCNN) are also explored to reveal algorithmic challenges ahead.
 
+[DeepAffinity: interpretable deep learning of compound–protein affinity through unified recurrent and convolutional neural networks](https://doi.org/10.1093/bioinformatics/btz111)
+
+(**What has happened since DeepAffinity? Please check out our latest work:** [Explainable Deep Relational Networks for Predicting Compound–Protein Affinities and Contacts](https://doi.org/10.1021/acs.jcim.0c00866). 
+* More DeepAffinity variants (such as hierarchical RNN for protein amino-acid sequence and GCN/GIN for compound graphs) 
+* Much more interpretable DeepAffinity+ with regularized and supervised attentions as well as DeepRelations with intrinsically explainable model architecture
+* Demonstration of how interpretability helps in drug discovery: binding site prediction, ligand docking, and structure activity relationship (SAR; such as ligand scoring and lead optimization)
+
+We have not released the code but have already done so for the [data](https://github.com/Shen-Lab/DeepAffinity/tree/master/data_DeepRelations) labeled with both the affinity and the explanation of the affinity (binary residue-atom contacts).) 
+ 
+ 
+# Training DeepAffinity: Illustration 
 ![Training-Process](/main_fig.png)
 
 ## Pre-requisite:
