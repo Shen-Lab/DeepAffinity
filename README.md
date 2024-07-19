@@ -3,12 +3,16 @@ Drug discovery demands rapid quantification of compound-protein interaction  (CP
 
 [DeepAffinity: interpretable deep learning of compound–protein affinity through unified recurrent and convolutional neural networks](https://doi.org/10.1093/bioinformatics/btz111)
 
-(**What has happened since DeepAffinity? Please check out our latest work:** [Explainable Deep Relational Networks for Predicting Compound–Protein Affinities and Contacts](https://doi.org/10.1021/acs.jcim.0c00866). 
+(**What has happened since DeepAffinity? (Part 1)** [Explainable Deep Relational Networks for Predicting Compound–Protein Affinities and Contacts (2020)](https://doi.org/10.1021/acs.jcim.0c00866). 
 * More DeepAffinity variants (such as hierarchical RNN for protein amino-acid sequence and GCN/GIN for compound graphs) 
 * Much more interpretable DeepAffinity+ with regularized and supervised attentions as well as DeepRelations with intrinsically explainable model architecture
 * Demonstration of how interpretability helps in drug discovery: binding site prediction, ligand docking, and structure activity relationship (SAR; such as ligand scoring and lead optimization)
+* [Data](https://github.com/Shen-Lab/DeepAffinity/tree/master/data_DeepRelations) labeled with both the affinity and the explanation of the affinity (binary residue-atom contacts).)
 
-We have not released the code but have already done so for the [data](https://github.com/Shen-Lab/DeepAffinity/tree/master/data_DeepRelations) labeled with both the affinity and the explanation of the affinity (binary residue-atom contacts).) 
+(**What has happened since DeepAffinity? (Part 2)** [Cross-Modality and Self-Supervised Protein Embedding (2022)](https://doi.org/10.1093/bioinformatics/btac470)
+* Unlike the 2020 work, structure data is also used during inference as an input (rather than only used as regularization during training in the 2020 work)
+* Accordingly we used the same, smaller dataset as the 2020 work but also utilized the larger dataset curated in DeepAffinity during sequence encoder pre-training
+* [Keras and PyTorch Codes](https://github.com/Shen-Lab/CPAC)
  
  
 # Training DeepAffinity: Illustration 
